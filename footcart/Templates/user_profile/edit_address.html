@@ -1,0 +1,44 @@
+{% extends 'user_profile/profile.html' %}
+
+{% load static %}
+
+{% block title %}
+ADD-ADDRESS
+{% endblock %}
+
+{% block profile %}
+
+<div class="col-lg-8 col-md-6 bg-white mt-5 pb-5" style=" border: 0.3px solid rgb(255, 255, 255);box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); height: 660px;">
+    <form action="/Edit_address/{{add.id}}" method="post"> {% csrf_token %}
+        <div class="mt-5 ms-5">
+            <h5>EDIT ADDRESS</h5>
+            <div>
+                <input type="text" class="form-control mt-3 d-inline-flex" style="width: 300px;" id="edit_addr_name" name="edit_addr_name" value="{{add.full_name}}" placeholder="Full Name" Required>
+                <input type="text" class="form-control ms-3 mt-3 d-inline-flex" style="width: 300px;" id="edit_addr_phone_number" name="edit_addr_phone_number" value="{{add.phone_number}}" placeholder="Phone Number" Required>
+
+            </div>
+            <div class="mt-2">
+                <input type="text" class="form-control mt-3 d-inline-flex" style="width: 300px;" id="edit_addr_pincode" name="edit_addr_pincode" value="{{add.pincode}}" placeholder="Pincode" Required>
+                <input type="text" class="form-control ms-3 mt-3 d-inline-flex" style="width: 300px;" id="edit_addr_locality" name="edit_addr_locality" value="{{add.locality}}" placeholder="Locality" Required>
+            </div>
+            <div class="mt-2">
+                <input type="text" class="form-control mt-3 d-inline-flex" style="width: 620px; height: 130px;" id="edit_addr_postoffice" name="edit_addr_postoffice" value="{{add.address}}" placeholder="House No./Post Office" Required>
+            </div>
+            <div class="mt-2">
+                <input type="text" class="form-control mt-3 d-inline-flex" style="width: 300px;" id="edit_addr_district" name="edit_addr_district" value="{{add.district}}" placeholder="District" Required>
+                <input type="text" class="form-control ms-3 mt-3 d-inline-flex" style="width: 300px;" id="edit_addr_state" name="edit_addr_state" value="{{add.state}}" placeholder="State" Required>
+
+            </div>
+            <div class="mt-2">
+                <input type="text" class="form-control mt-3 d-inline-flex" style="width: 300px;" id="edit_addr_landmark" name="edit_addr_landmark" value="{{add.landmark}}" placeholder="Landmark(Optional)">
+                <input type="text" class="form-control ms-3 mt-3 d-inline-flex" style="width: 300px;" id="edit_addr_phone2" name="edit_addr_phone2" value="{{add.alter_phone}}" placeholder="Alternate Phone(Optional)">
+            </div>
+        </div>
+        
+        <div class="mt-5 ms-5">
+            <button type="submit" class="btn btn-primary">Save</button>
+        </div>
+    </form>
+</div>
+
+{% endblock %}

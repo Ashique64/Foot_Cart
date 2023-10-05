@@ -1,0 +1,24 @@
+{% extends 'user_profile/profile.html' %}
+
+{% load static %}
+
+{% block title %}
+MY WALLET
+{% endblock %}
+
+{% block profile %}
+
+
+<div class="col-lg-5 col-md-6 bg-white mt-5 p-5" style="border: 0.3px solid rgb(255, 255, 255); box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); height: 100%;">
+    <div>
+        <div class="d-flex justify-content-center">
+            <h5>WALLET BALANCE</h5>
+        </div>
+        <div class="d-flex justify-content-center">
+            <h5>₹ {{refund_amount}}</h5>
+        </div>
+    </div>
+</div>
+
+
+{% endblock %}

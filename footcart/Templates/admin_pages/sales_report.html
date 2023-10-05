@@ -1,0 +1,143 @@
+{% extends 'admin_pages/base_admin.html' %}
+
+{% block content %}
+<div class="container" id="invoiceContainer" style="position: relative; top: 50px; padding: 50px;">
+    <h3 class="mb-4">Sales Report</h3>
+    <form method="get" class="mb-2">
+        <label for="date_range">Select Date Range:</label>
+        <select name="date_range" id="date_range">
+            <option value="daily">Daily</option>
+            <option value="weekly">Weekly</option>
+            <option value="monthly">Monthly</option>
+            <option value="yearly">Yearly</option>
+        </select>
+        <button type="submit" class="btn btn-primary btn-sm">Filter</button>
+    </form>
+    <div class="row">
+        <div class="col-lg-12 col-md-12">
+            <div class="card mb-4">
+                <div class="card-header">
+                    <h5></h5>
+                </div>
+                <div class="card-body">
+                    <table class="table table-striped">
+                        <thead>
+                            <tr>
+                                <th>ID</th>
+                                <th>Product</th>
+                                <th>Payment</th>
+                                <th>Quantity</th>
+                                <th>Total price</th>
+                                <th>Status</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                        {% for sales in page %}
+                            <tr>
+                                <th scope="row">{{ page.start_index|add:forloop.counter0 }}</th>
+                                <td>{{sales.variant.product.name}}</td>
+                                <td>{{sales.order.payment_method}}</td>
+                                <td>{{sales.quantity}}</td>
+                                <td>{{sales.order.total_price}}</td>
+                                <td>{{sales.order.order_status}}</td>
+                            </tr>
+                        {% endfor %} 
+                        </tbody>
+                    </table>
+                </div>
+
+            </div>
+            <div style="display: flex; justify-content: center;"><button type="button" id="pdfButton" class="btn btn-outline-info">Download</button></div>
+        </div>
+    </div>
+    <div class="mt-5">
+        <nav aria-label="Page navigation">
+            <ul class="pagination justify-content-center">
+                {% if page.has_previous %}
+                    <li class="page-item">
+                        <a class="page-link" href="?page=1">First</a>
+                    </li>
+                    <li class="page-item">
+                        <a class="page-link" href="?page={{ page.previous_page_number }}">Previous</a>
+                    </li>
+                {% endif %}
+                
+                <li class="page-item active">
+                    <span class="page-link">{{ page.number }}</span>
+                </li>
+    
+                {% if page.has_next %}
+                    <li class="page-item">
+                        <a class="page-link" href="?page={{ page.next_page_number }}">Next</a>
+                    </li>
+                    <li class="page-item">
+                        <a class="page-link" href="?page={{ page.paginator.num_pages }}">Last</a>
+                    </li>
+                {% endif %}
+            </ul>
+        </nav>
+    </div>
+</div>
+
+<!-- Include Bootstrap JS -->
+<script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.1/dist/umd/popper.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.9.3/html2pdf.bundle.min.js"></script>
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+
+<style>
+    /* Custom styles for the container and card */
+    .container {
+        padding: 20px;
+    }
+
+    .card {
+        width: 100%;
+    }
+
+    /* Custom styles for the table */
+    table {
+        width: 100%;
+    }
+
+    /* Responsive adjustments */
+    @media (max-width: 768px) {
+        .container {
+            position: relative;
+            top: 0;
+        }
+
+        .card {
+            width: auto;
+        }
+    }
+
+    @media (max-width: 576px) {
+        .container {
+            padding: 10px;
+        }
+    }
+</style>
+
+
+<script>
+    // Update the event listener to target the correct ID
+    document.getElementById("pdfButton").addEventListener("click", function () {
+        // Select the appropriate element for PDF conversion
+        const invoiceContainer = document.getElementById("invoiceContainer");
+
+        // Define PDF generation options
+        const pdfOptions = {
+            filename: 'invoice.pdf',
+            image: { type: 'jpeg', quality: 1.0 }, // Adjust the image quality (1.0 for maximum quality)
+            html2canvas: { scale: 2 }, // Adjust the scale for higher quality
+            jsPDF: { unit: 'mm', format: 'a4', orientation: 'portrait' }
+        };
+
+        // Generate and save the PDF
+        html2pdf().from(invoiceContainer).set(pdfOptions).save();
+    });
+</script>
+
+{% endblock %}
+

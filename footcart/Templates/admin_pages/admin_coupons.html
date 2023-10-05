@@ -1,0 +1,99 @@
+{% extends 'admin_pages/base_admin.html' %}
+
+{% block content %}
+<div class="container" style="position: relative; top: 50px; padding: 50px;">
+    <h3 class="mb-4">Admin Coupons Page</h3>
+    <div class="row">
+        <div class="col-lg-12 col-md-12">
+            <div class="card mb-4">
+                <div class="card-header">
+                    <h5>Order List</h5>
+                </div>
+                <div class="card-body">
+                    <table class="table table-striped">
+                        <thead>
+                            <tr>
+                                <th>ID</th>
+                                <th>Code</th>
+                                <th>Description</th>
+                                <th>Discount Type</th>
+                                <th>Discount</th>
+                                <th>Minimum_Amount</th>
+                                <th>Valid From</th>
+                                <th>Valid To</th>
+                                <th>Status</th>
+                                <th>Actions</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <!-- Loop through orders here -->
+                            {% for coupon in all_coupons %}
+                            <tr>
+                                <td>{{coupon.id}}</td>
+                                <td>{{coupon.code}}</td>
+                                <td>{{coupon.description}}</td>
+                                <td>{{coupon.discount_type}}</td>
+                                <td>{{coupon.discount}}</td>
+                                <td>{{coupon.minimum_amount}}</td>
+                                <td>{{coupon.valid_from}}</td>
+                                <td>{{coupon.valid_to}}</td>
+                                <td>{{coupon.is_active}}</td>
+                                <td>
+                                    <a href="{% url 'Admn_edit_coupons' coupon.id %}" class="btn btn-primary btn-sm">Edit</a>
+                                    <a href="{% url 'Admn_delete_coupons' coupon.id %}" class="btn btn-danger btn-sm mt-2">Delete</a>
+                                </td>
+                            </tr>
+                            {% endfor %}
+                        </tbody>
+                    </table>
+                </div>
+
+            </div>
+            <div style="margin-left: 420px;">
+                <a href="/Admn_add_coupons" class="btn btn-primary" style="width: 170px;">Add Coupon</a>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Include Bootstrap JS -->
+<script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.1/dist/umd/popper.min.js"></script>
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+
+<style>
+    /* Custom styles for the container and card */
+    .container {
+        padding: 20px;
+    }
+
+    .card {
+        width: 100%;
+    }
+
+    /* Custom styles for the table */
+    table {
+        width: 100%;
+    }
+
+    /* Responsive adjustments */
+    @media (max-width: 768px) {
+        .container {
+            position: relative;
+            top: 0;
+        }
+
+        .card {
+            width: auto;
+        }
+    }
+
+    @media (max-width: 576px) {
+        .container {
+            padding: 10px;
+        }
+    }
+</style>
+
+{% endblock %}
+

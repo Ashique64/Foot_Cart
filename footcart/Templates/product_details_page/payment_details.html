@@ -1,0 +1,296 @@
+{% extends 'home_pages/base.html' %}
+
+{% load static %}
+
+{% block title %}
+PAYMENT DETAILS
+{% endblock %}
+
+{% block content %}
+<div class="container-fluid mb-5" style="margin-top: 85px;">
+    <div class="row">
+        <div class="col-lg-8 col-md-6 ms-5 mt-5 mb-5">
+            <div>
+                <h6 style="font-size: 20px; color: rgb(208, 206, 205);">SELECT PAYMENT MODE</h6>
+            </div>
+
+            <div style="width: 600px;">
+                <form method="post">
+                    {% csrf_token %}
+                    <div class="card mt-4">
+                        <div class="card-header">
+                            <h6 style="color: rgb(228, 158, 68);">Select Payment Method</h6>
+                        </div>
+                        <div class="card-body">
+                            <label for="payment_method">Choose a Payment Method:</label>
+                            <select class="form-select" id="payment_method" name="payment_method">
+                                <option disabled selected>Choose Payment</option>
+                                <option value="UPI Payment">UPI Payment</option>
+                                <option value="Cash on Delivery">Cash on Delivery</option>
+                                <option value="Debit/Credit Cards">Debit/Credit Cards</option>
+                                <option value="Razorpay">Razorpay</option>
+                            </select>
+                            <div id="upiSection" class="mt-3" style="display: none;">
+                                <div class="card mt-4">
+                                    <div class="card-header">
+                                        <h6 style="color: rgb(228, 158, 68);">UPI Payment</h6>
+                                    </div>
+                                    <div class="card-body">
+                                        <p class="card-text" style="font-size: 14px; font-weight: 700;">Enter your UPI
+                                            ID</p>
+                                        <input type="text" id="upi" name="upi" placeholder="Enter your UPI ID">
+                                        <div class="mt-3">
+                                            <button type="submit"
+                                                style="background-color: rgb(228, 158, 68);color: aliceblue;"
+                                                class="btn">PAY AMOUNT</button>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div id="codSection" class="mt-3" style="display: none;">
+                                <!-- Cash on Delivery section -->
+                                <div class="card mt-4">
+                                    <div class="card-header">
+                                        <h6 style="color: rgb(228, 158, 68);">Cash on Delivery</h6>
+                                    </div>
+                                    <div class="card-body">
+                                        <div style="background-color: antiquewhite;">
+                                            <p class="card-text ms-3" style="font-size: 9px;"><strong>₹ 29 will be
+                                                    charged</strong>
+                                                additional for Cash on Delivery</p>
+                                        </div>
+                                        <div class="mt-3">
+                                            <button type="submit"
+                                                style="background-color: rgb(228, 158, 68);color: aliceblue;"
+                                                class="btn">PLACE ORDER</button>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div id="cardSection" class="mt-3" style="display: none;">
+                                <!-- Debit/Credit Cards section -->
+                                <div class="card mt-4">
+                                    <div class="card-header">
+                                        <h6 style="color: rgb(228, 158, 68);">Debit/Credit Cards</h6>
+                                    </div>
+                                    <div class="card-body">
+                                        <p class="card-text" style="font-size: 14px; font-weight: 700;">Enter your card
+                                            details to make
+                                            a payment</p>
+                                        <form>
+                                            <label for="cardNumber">Name on the Card:</label>
+                                            <input type="text" id="cardNumber" name="cardNumber" class="form-control">
+                                            <label for="cardNumber">Card Number:</label>
+                                            <input type="text" id="cardNumber" name="cardNumber" class="form-control">
+                                            <label for="expiryDate">Expiry Date (MM/YY):</label>
+                                            <div class="d-flex">
+                                                <input type="text" id="expiryMonth" name="expiryMonth"
+                                                    class="form-control me-2" placeholder="MM">
+                                                <input type="text" id="expiryYear" name="expiryYear"
+                                                    class="form-control" placeholder="YY">
+                                            </div>
+                                            <label for="cvv">CVV:</label>
+                                            <input type="text" id="cvv" name="cvv" class="form-control">
+                                            <div class="mt-3">
+                                                <button type="submit"
+                                                    style="background-color: rgb(228, 158, 68);color: aliceblue;"
+                                                    class="btn">PAY AMOUNT</button>
+                                            </div>
+                                        </form>
+                                    </div>
+                                </div>
+                            </div>
+                            <div id="razorpaySection" class="mt-3" style="display: none;">
+                                <!-- Razorpay section -->
+                                <div class="card mt-4">
+                                    <div class="card-header">
+                                        <h6 style="color: rgb(228, 158, 68);">Razorpay Payment</h6>
+                                    </div>
+                                    <div class="card-body">
+                                        <button type="button" id="razorpay_button"
+                                            style="background-color: rgb(228, 158, 68); color: aliceblue;"
+                                            class="btn">Pay with Razorpay</button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>
+        <div class="col-lg-3 col-md-6" style="margin-top: 70px;">
+            <div class="p-4" style="background-color: rgb(248, 243, 235);border: 1px solid rgb(225, 221, 221);">
+                <h6>Order Details</h6>
+                <div class="d-flex justify-content-between mt-4">
+                    <p class="d-inline-flex" style="font-size: smaller;">Cart Total</p>
+                    <span class="d-inline-flex">
+                        <p class="d-inline-flex" style="font-size: smaller;">₹ {{total_price}}</p>
+                    </span>
+                </div>
+
+                
+                <div class="d-flex justify-content-between mt-3" id="couponDiscountSection" style="display: none;">
+                    <p class="d-inline-flex" style="font-size: smaller;">Coupon Discount</p>
+                    <span class="d-inline-flex">
+                        <p id="couponDiscount" class="d-inline-flex" style="font-size: smaller;"></p>
+                    </span>
+                </div>
+                
+
+                {% if prod.cod_fee %}
+                <div class="d-flex justify-content-between">
+                    <p class="d-inline-flex" style="font-size: smaller;">COD Fee</p>
+                    <span class="d-inline-flex">
+                        <p class="d-inline-flex" style="font-size: smaller;">+ ₹ 18</p>
+                    </span>
+                </div>
+                {% endif %}
+                {% if prod.delivery_fee %}
+                <div class="d-flex justify-content-between">
+                    <p class="d-inline-flex" style="font-size: smaller;">Delivery Fee</p>
+                    <span class="d-inline-flex">
+                        <p class="d-inline-flex" style="font-size: smaller;">+ ₹ 58</p>
+                    </span>
+                </div>
+                {% endif %}
+
+                <div class="d-flex justify-content-between mt-3">
+                    <h6 class="d-inline-flex">Amount Payable</h6>
+                    <span class="d-inline-flex">
+                        <p id="discountedTotal" class="d-inline-flex" style="font-size: smaller;">₹ {{total_price}}</p>
+                    </span>
+                </div>
+
+            </div>
+
+            <div class="mt-2 mb-5 p-4"
+                style="border: 1px dashed rgb(234, 142, 22); background-color: rgb(244, 248, 251);">
+                <form method="post" id="paymentForm" action="{% url 'apply_coupon' %}">
+                    {% csrf_token %}
+                    <label for="couponInput" class="form-label">Apply Coupon Code</label>
+                    <div class="input-group">
+                        <select id="selectedCoupon" name="coupon_code" class="form-select">
+                            <option value="" disabled selected>Select Coupon Code</option>
+                            {% for coupon in coupons %}
+                            <option value="{{ coupon.code }}">{{ coupon.code }}</option>
+                            {% endfor %}
+                        </select>
+                        <input type="hidden" id="discountedTotalInput" name="discounted_total" value="{{ total_price }}">
+                        <input type="hidden" id="totalAmount" name="total_price" value="{{ total_price }}">
+                        <button type="button" id="applyCouponBtn" class="btn btn-secondary">Apply</button>
+                    </div>
+                </form>
+                
+
+                <div class="mt-3 mb-5 p-4"
+                    style="border: 1px dashed rgb(234, 142, 22); background-color: rgb(244, 248, 251);">
+                    <h6>Available Coupons</h6>
+                    <ul id="couponList">
+                        {% for coupon in coupons %}
+                        <li class="mb-2 coupon-item" data-code="{{ coupon.code }}">{{ coupon.code }} - {{coupon.description }}</li>
+                        {% endfor %}
+                    </ul>
+                </div>
+            </div>
+
+        </div>
+    </div>
+</div>
+
+
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<script src="https://checkout.razorpay.com/v1/checkout.js"></script>
+<script>
+$(document).ready(function () {
+    // Initialize the discountedTotal to the total price by default
+    let discountedTotal = parseFloat('{{ total_price }}');
+    
+    // Function to apply the coupon via AJAX
+    function applyCoupon() {
+        const couponCode = $('#selectedCoupon').val();
+        const totalAmount = $('#totalAmount').val();
+        $.ajax({
+            type: 'POST',
+            url: '{% url 'apply_coupon' %}',
+            data: {
+                'csrfmiddlewaretoken': '{{ csrf_token }}',
+                'coupon_code': couponCode,
+                'total_price': totalAmount
+            },
+            success: function (data) {
+                if (data.success) {
+                    $('#couponDiscount').text('- ₹ ' + data.discount_amount);
+                    $('#discountedTotal').text('₹ ' + data.discounted_total);
+                    $('#discountedTotalInput').val(data.discounted_total); // Update the hidden field
+                    $('#couponDiscountSection').show();
+                    discountedTotal = parseFloat(data.discounted_total); // Update discountedTotal
+                } else {
+                    alert('Coupon not applicable or invalid.');
+                }
+            },
+            error: function (xhr, textStatus, errorThrown) {
+                console.log(xhr.responseText);
+                alert('Error applying coupon. Please try again.');
+            }
+        });
+    }
+
+    // Attach the applyCoupon function to the button click event
+    $('#applyCouponBtn').click(function (e) {
+        e.preventDefault();
+        applyCoupon();
+    });
+
+    $('#razorpay_button').click(function () {
+        var cart_id = "{{ cart_id }}"
+        const options = {
+            key: 'rzp_test_dXB6U8JFeuMkYu',
+            amount: discountedTotal * 100, // Use the discounted total for Razorpay
+            currency: 'INR',
+            name: 'Foot Cart',
+            description: 'Payment for Order ID: {{ order_items.id }}',
+            handler: function (response) {
+                // Redirect or update your page as needed
+                window.location.href = `http://127.0.0.1:8000/razorpay/${cart_id}`;
+            },
+            prefill: {
+                name: 'Your Name',
+                email: 'your@email.com',
+                contact: '1234567890',
+            },
+        };
+
+        const rzp = new Razorpay(options);
+        rzp.open();
+    });
+
+    // Payment method selection
+    const paymentMethodSelect = document.getElementById('payment_method');
+    const upiSection = document.getElementById('upiSection');
+    const codSection = document.getElementById('codSection');
+    const cardSection = document.getElementById('cardSection');
+    const razorpaySection = document.getElementById('razorpaySection');
+
+    paymentMethodSelect.addEventListener('change', function () {
+        upiSection.style.display = 'none';
+        codSection.style.display = 'none';
+        cardSection.style.display = 'none';
+        razorpaySection.style.display = 'none';
+
+        if (this.value === 'UPI Payment') {
+            upiSection.style.display = 'block';
+        } else if (this.value === 'Cash on Delivery') {
+            codSection.style.display = 'block';
+        } else if (this.value === 'Debit/Credit Cards') {
+            cardSection.style.display = 'block';
+        } else if (this.value === 'Razorpay') {
+            razorpaySection.style.display = 'block';
+        }
+    });
+});
+</script>
+
+
+
+
+{% endblock %}

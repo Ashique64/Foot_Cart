@@ -1,0 +1,129 @@
+{% extends 'home_pages/base.html' %}
+
+{% load static %}
+
+{% block title %}
+SHIPPING DETAILS
+{% endblock %}
+
+{% block content %}
+
+
+<div class="container-fluid" style="margin-top: 95px;">
+    <div class="row" style="background-color: rgb(235, 234, 231);">
+        <div class="col-lg-8 ms-3 p-4 mt-2">
+            <h6 style="font-size: 13px; font-weight: 400;">Thank You <strong>{{user.username}}</strong>,for placing an
+                order with us.Your order ID: <strong>{{order_items.id}}</strong> is confirmed .<br>We expect to deliver
+                your order by DATE.</h6>
+        </div>
+        <div class="col-lg-3">
+            <div class="mt-4">
+                <a href="/"><button type="button" class=" border-0 "
+                        style="background-color: rgb(221, 163, 87); width: 270px; color: azure; height: 40px;">CONTINUE
+                        SHOPPING</button></a>
+            </div>
+        </div>
+    </div>
+
+    <div class="row">
+        <div class="col-lg-8 col-md-6 ms-3 mt-5 mb-5">
+            <div>
+                <h5
+                    style="color: rgb(228, 158, 68); font-family: 'Lucida Sans', 'Lucida Sans Regular', 'Lucida Grande', 'Lucida Sans Unicode', Geneva, Verdana, sans-serif;">
+                    ORDER SUMMARY</h5>
+            </div>
+            {% for item in order_items %}
+            <div class="card mb-3 p-3">
+                <div class="card-body">
+                    <div class="row" style="height: 100px;">
+                        <div class="col-md-2">
+                            <img style="height: 100px;" src="{{ item.variant.image.url }}"
+                                alt="{{item.variant.product.name}}" class="img-fluid">
+                        </div>
+                        <div class="col-md-2 d-flex justify-content-center">
+                            <p class="card-subtitle mb-2">{{item.variant.product.name}}</p>
+                        </div>
+                        <div class="col-md-2 d-flex justify-content-center">
+                            <p class="card-subtitle mb-2">Payment :<br>{{item.order.payment_method}}</p>
+                        </div>
+                        <div class="col-md-2 d-flex justify-content-center">
+                            <p class="card-subtitle mb-2">Size:{{ item.variant.size.name }}</p>
+                        </div>
+                        <div class="col-md-2 d-flex justify-content-center">
+                            <p class="card-subtitle mb-2">Price : {{ item.variant.price }}</p>
+                        </div>
+                        <div class="col-md-2 d-flex justify-content-center">
+                            <p class="card-subtitle mb-2">Quantity : {{item.quantity}}</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            {% endfor %}
+
+        </div>
+
+        <div class="col-lg-3 col-md-6 mb-5" style="margin-top: 70px;">
+            <div class="p-4" style="background-color: rgb(248, 243, 235);border: 1px solid rgb(225, 221, 221);">
+                <h6>Order Details</h6>
+                <div class="d-flex justify-content-between mt-4">
+                    <p class="d-inline-flex" style="font-size: smaller;">Cart Total</p>
+                    <span class="d-inline-flex">
+                        <p class="d-inline-flex" style="font-size: smaller;">₹ {{total_price}}</p>
+                    </span>
+                </div>
+                
+                <div class="d-flex justify-content-between mt-3">
+                    <p class="d-inline-flex" style="font-size: smaller;">Coupon Discount</p>
+                    <span class="d-inline-flex">
+                        <p id="couponDiscount" class="d-inline-flex" style="font-size: smaller;">- ₹ {{ coupon_discount_amount }}</p>
+                    </span>
+                </div>
+
+                {% if prod.cod_fee %}
+                <div class="d-flex justify-content-between">
+                    <p class="d-inline-flex" style="font-size: smaller;">COD Fee</p>
+                    <span class="d-inline-flex">
+                        <p class="d-inline-flex" style="font-size: smaller;">+ ₹ 18</p>
+                    </span>
+                </div>
+                {% endif %}
+                {% if prod.delivery_fee %}
+                <div class="d-flex justify-content-between">
+                    <p class="d-inline-flex" style="font-size: smaller;">Delivery Fee</p>
+                    <span class="d-inline-flex">
+                        <p class="d-inline-flex" style="font-size: smaller;">+ ₹ 58</p>
+                    </span>
+                </div>
+                {% endif %}
+
+                <div class="d-flex justify-content-between mt-3">
+                    <h6 class="d-inline-flex">Order Total</h6>
+                    <span class="d-inline-flex">
+                        <p id="discountedTotal" class="d-inline-flex" style="font-size: smaller;">₹ {{ order_total }}</p>
+                    </span>
+                </div>
+
+                <hr>
+                <div class="mt-5">
+                    <h6>{{address.full_name}}</h6>
+                    <div class="mt-4">
+                        <p style="line-height: 0.1; font-size: 12px;color: darkgray;">{{address.address}},
+                            {{address.locality}}</p>
+                        <p style="line-height: 0.1; font-size: 12px;color: darkgray;">{{address.district}},
+                            {{address.state}}</p>
+                        <p style="line-height: 0.1; font-size: 12px;color: darkgray;">Pincode : {{address.pincode}}</p>
+                        <p style="line-height: 0.1; font-size: 12px;color: darkgray;">Phone : {{address.phone_number}}
+                        </p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
+
+
+
+{% endblock %}

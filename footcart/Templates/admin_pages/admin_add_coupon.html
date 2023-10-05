@@ -1,0 +1,67 @@
+{% extends 'admin_pages/base_admin.html' %}
+
+{% block content %}
+<div class="container mt-4" style="position: relative; left: 80px; width: 1100px; padding: 50px;">
+    <h3 class="mb-4 mt-5">Add Coupon</h3>
+    <form method="post" action="/Admn_add_coupons" enctype="multipart/form-data">
+        {% csrf_token %}
+        <div class="form-group d-inline-flex" style="width: 70%;">
+            <div>
+                <label for="code">Coupon code</label>
+                <input type="text" class="form-control" id="code" name="code" style="width: 300px;" required>
+            </div>
+            
+            <div style="margin-left: 100px;">
+                <label for="discount_type">Discount Type</label>
+                <select class="form-control" id="discount_type" name="discount_type" style="width: 300px;" required>
+                    <option value="percentage">Percentage</option>
+                    <option value="fixed_amount">Fixed Amount</option>
+                </select>
+            </div>
+            
+        </div>
+        
+        <div class="form-group d-inline-flex" style="width: 70%;">
+            <div>
+                <label for="coupon_discount">Discount</label>
+                <input type="text" class="form-control" id="coupon_discount" name="coupon_discount" style="width: 300px;" required>
+            </div>
+            <div style="margin-left: 100px;">
+                <label for="minimum_amount">Minimum Amount</label>
+                <input type="text" class="form-control" id="minimum_amount" name="minimum_amount" style="width: 300px;" required>
+            </div>
+        </div>
+        <div class="form-group d-inline-flex" style="width: 70%;">
+            <div>
+                <label for="valid_from">Valid From</label>
+                <input type="datetime-local" class="form-control" id="valid_from" name="valid_from" style="width: 300px;" required>
+            </div>
+            <div style="margin-left: 100px;">
+                <label for="valid_to">Valid To</label>
+                <input type="datetime-local" class="form-control" id="valid_to" name="valid_to" style="width: 300px;" required>
+            </div>
+        </div>
+        <div class="form-group d-inline-flex" style="width: 70%;">
+            <div>
+                <label for="coupon_description">Coupon Description</label>
+                <textarea class="form-control" id="coupon_description" name="coupon_description" rows="4" style="width: 300px;" required></textarea>
+            </div>
+            <div style="margin-left: 100px;">
+                <label for="coupon_status">Status</label>
+                <select class="form-control" id="coupon_status" name="coupon_status" style="width: 300px;" required>
+                    <option value="True">Active</option>
+                    <option value="False">Inactive</option>
+                </select>
+            </div>
+        </div>
+
+        <div class="form-group d-inline-flex" style="width: 70%;">
+            <div class="mt-4>
+                <a href=""><button type="submit" class="btn btn-primary">Submit</button></a>
+            </div>
+        </div>
+       
+    </form>
+    
+</div>
+{% endblock %}

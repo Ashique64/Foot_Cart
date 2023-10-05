@@ -1,0 +1,50 @@
+{% extends 'admin_pages/base_admin.html' %}
+
+{% block content %}
+<div class="container" style="position: relative; top: 50px;right: 60px; padding: 50px;">
+    <h3 class="mb-4">Product Variant Page</h3>
+
+    <!-- Product List -->
+    <div class="card mb-4" style="width: 1000px;">
+        <div class="card-header">
+            <h5>Product List</h5>
+        </div>
+        <div class="card-body">
+            <table class="table table-striped">
+                <thead>
+                    <tr>
+                        <th>ID</th>
+                        <th>Image</th>
+                        <th>Size</th>
+                        <th>Color</th>
+                        <th>Price</th>
+                        <th>Quantity</th>
+                        <th>Discription</th>
+                        <th>Actions</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for variant in variants %}
+                    <tr>
+                        <td>{{ variant.id }}</td>
+                        <td><img src="{{variant.image.url}}" alt="{{variant.name}}" class="img-fluid" width="100" height="100"></td>
+                        <td>{{ variant.size }}</td>
+                        <td>{{ variant.color }}</td>
+                        <td>{{ variant.price }}</td>
+                        <td>{{ variant.quantity }}</td>
+                        <td>{{ variant.discription }}</td>
+                        <td>
+                            <a href="{% url 'Edit_variant' variant.id %}" class="btn btn-primary btn-sm">Edit</a>
+                            <a href="{% url 'Delete_variant' variant.id %}" class="btn btn-danger btn-sm">Delete</a>
+                        </td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    </div>
+    <div style="margin-left: 420px;">
+        <a href="{% url 'Add_variant' product.id %}" class="btn btn-primary" style="width: 170px;">Add Variant</a>
+    </div>
+</div>
+{% endblock %}

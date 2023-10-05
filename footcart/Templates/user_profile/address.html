@@ -1,0 +1,38 @@
+{% extends 'user_profile/profile.html' %}
+
+{% load static %}
+
+{% block title %}
+ADDRESS
+{% endblock %}
+
+{% block profile %}
+
+<div class="col-lg-8 col-md-6 bg-white mt-5" style="border: 0.3px solid rgb(255, 255, 255); box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); height: 500px;">
+    <div class="mt-5 ms-5">
+        <h5 class="d-inline-flex me-5">Manage Addresses</h5>
+    </div>
+    <div class="ms-5 mt-3 me-5" style="border: 0.3px solid rgb(216, 211, 211); padding: 15px;">
+        <a style="text-decoration: none; font-weight: 600;" href="/Add_address">+ ADD A NEW ADDRESS</a>
+    </div>
+
+    {% if address %}
+    <div class="p-3 ms-5 mt-5 me-5" style="border: 0.3px solid rgb(216, 211, 211); height: 200px;">
+        <div>
+            <div><p class="d-inline-flex">{{address.full_name}}</p><span class="d-inline-flex ms-4"><p>{{address.phone_number}}</p></span></div>
+            <div><p class="d-inline-flex">{{address.address}}</p><span class="d-inline-flex ms-2"><p>{{address.pincode}}</p></span></div>
+            <div><p class="d-inline-flex">{{address.district}}</p><span class="d-inline-flex ms-4"><p>{{address.state}}</p></span></div>      
+        </div>
+    </div>
+        <div class="ms-5 mt-3">
+            <button type="button" class="btn btn-primary"><a style="color: white; text-decoration: none;" href="/Edit_address/{{address.id}}">Edit</a></button><span><button type="button" class="btn btn-danger ms-2"><a style="color: white; text-decoration: none;" href="/Delete_address/{{address.id}}">Delete</a></button></span>
+        </div>
+    
+    {% else %}
+    <div class="d-flex justify-content-center mt-5">
+        <p>No address submitted yet.</p>
+    </div>
+    {% endif %}
+</div>
+
+{% endblock %}

@@ -1,0 +1,53 @@
+{% extends 'user_profile/profile.html' %}
+
+{% load static %}
+
+{% block title %}
+MY ORDERS
+{% endblock %}
+
+{% block profile %}
+
+<div class="col-lg-8 col-md-6 bg-white mt-5 p-5" style="border: 0.3px solid rgb(255, 255, 255); box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); height: 100%;">
+    <h5 class="mt-2 ms-3">My Orders</h5>
+    {% for order_info in my_orders %}
+    <div class="card mt-3 mb-3 p-3">
+        <div class="card-body">
+            <div class="row">
+                <div class="col-md-2">
+                    <a href="{% url 'order_items_invoice' order_info.order.id %}"><img style="height: 100px;" src="{{ order_info.product_image }}" alt="{{ order_info.product_name }}" class="img-fluid"></a>
+                </div>
+                <div class="col-md-2 d-flex justify-content-center">
+                    <h6 class="card-subtitle mb-2">{{ order_info.product_name }}</h6>
+                </div>
+                <div class="col-md-3 d-flex justify-content-center">
+                    <p class="card-subtitle mb-2">Status :<br> {{ order_info.order.order_status }}</p>
+                </div>
+                <div class="col-md-2 d-flex justify-content-center">
+                    <p class="card-subtitle mb-2">Order Date :<br>{{ order_info.order.order_date }}</p>
+                </div>
+                
+                <div class="col-md-3 d-flex justify-content-end mt-4">
+                    {% if order_info.order.order_status == 'Pending' %}
+                    <form method="post" action="{% url 'cancel_order' order_info.order.id %}">
+                        {% csrf_token %}
+                        <button type="submit" class="btn btn-outline-danger" style="height: 40px; width: 108px;">Cancel</button>
+                    </form>
+                    {% elif order_info.order.order_status == 'Processing' %}
+                        <form method="post" action="{% url 'cancel_order' order_info.order.id %}">
+                            {% csrf_token %}
+                            <button type="submit" class="btn btn-outline-danger" style="height: 40px; width: 108px;">Cancel</button>
+                        </form>
+                    {% elif order_info.order.order_status == 'Cancelled' %}
+                        <button type="button" class="btn btn-outline-danger" style="height: 40px; width: 108px;">Cancelled</button>
+                    {% else %}
+                    <a href="{% url 'track_order' order_info.order.id %}" class="btn btn-outline-info" style="height: 40px;">Track Order</a>
+                    {% endif %}
+                </div>
+            </div>
+        </div>
+    </div>
+    {% endfor %}
+</div>
+
+{% endblock %}

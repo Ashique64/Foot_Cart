@@ -1,0 +1,75 @@
+{% extends 'admin_pages/base_admin.html' %}
+
+{% block content %}
+<div class="container" style="position: relative; top: 50px;padding: 50px;">
+    <h3 class="mb-4">Admin Product Page</h3>
+
+    <!-- Product List -->
+    <div class="card mb-4" style="width: 1000px;">
+        <div class="card-header">
+            <h5>Product List</h5>
+        </div>
+        <div class="card-body">
+            <table class="table table-striped">
+                <thead>
+                    <tr>
+                        <th>ID</th>
+                        <th>Product Name</th>
+                        <th>Categories</th>
+                        <th>Brand</th>
+                        <th>Variant</th>
+                        <th>Status</th>
+                        <th>Actions</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for product in product_items %}
+                    <tr>
+                        <td>{{ product.id }}</td>
+                        <td>{{ product.name }}</td>
+                        <td>{{ product.category }}</td>
+                        <td>{{ product.brand }}</td>
+                        <td><a href="{% url 'Variant' product.id %}"><button type="button" class="btn btn-primary">Variant</button></a></td>
+                        <td>{{ product.status }}</td>
+                        <td>
+                            <a href="{% url 'Admn_edit_product' product.id %}" class="btn btn-primary btn-sm">Edit</a>
+                            <a href="{% url 'Admn_delete_product' product.id %}" class="btn btn-danger btn-sm">Delete</a>
+                        </td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    </div>
+    <div style="margin-left: 440px;">
+        <a href="/Admn_add_product" class="btn btn-primary" style="width: 170px;">Add Product</a>
+    </div>
+    <div class="mt-5">
+        <nav aria-label="Page navigation">
+            <ul class="pagination justify-content-center">
+                {% if product_items.has_previous %}
+                    <li class="page-item">
+                        <a class="page-link" href="?page=1">First</a>
+                    </li>
+                    <li class="page-item">
+                        <a class="page-link" href="?page={{ product_items.previous_page_number }}">Previous</a>
+                    </li>
+                {% endif %}
+                
+                <li class="page-item active">
+                    <span class="page-link">{{ product_items.number }}</span>
+                </li>
+    
+                {% if product_items.has_next %}
+                    <li class="page-item">
+                        <a class="page-link" href="?page={{ product_items.next_page_number }}">Next</a>
+                    </li>
+                    <li class="page-item">
+                        <a class="page-link" href="?page={{ product_items.paginator.num_pages }}">Last</a>
+                    </li>
+                {% endif %}
+            </ul>
+        </nav>
+    </div>
+</div>
+{% endblock %}

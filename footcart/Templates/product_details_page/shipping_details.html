@@ -1,0 +1,110 @@
+{% extends 'home_pages/base.html' %}
+
+{% load static %}
+
+{% block title %}
+SHIPPING DETAILS
+{% endblock %}
+
+{% block content %}
+
+
+<div class="container-fluid" style="margin-top: 85px;">
+    <div class="row">
+        <div class="col-lg-8 col-md-6 ms-5 mt-5">
+            <div>
+                <div class="d-flex">
+                    <h6 style="font-size: 26px; font-weight: 400; color: rgb(228, 158, 68);">Delivery Address</h6>
+                    <span class="ms-3"><i class="bi bi-geo-alt" style="font-size: 23px; color: rgb(228, 158, 68);"></i></span>
+                </div>
+                <p style="color: rgb(198, 195, 192);">We will deliver your order to this address</p>
+            </div>
+
+            <div class="mt-5">
+                <form method="post" action="{% url 'Shipping_details' cart.id %}">
+                    {% csrf_token %}
+                    {% for add in address %}
+                    <label>
+                        <input type="radio" name="selected_address" value="{{ add.id }}">
+                        <h6>{{ add.full_name }}</h6>
+                        <div class="mt-4">
+                            <p style="line-height: 0.1; font-size: 12px;color: darkgray;">{{ add.address }}, {{ add.locality }}</p>
+                            <p style="line-height: 0.1; font-size: 12px;color: darkgray;">{{ add.district }}, {{ add.state }}</p>
+                            <p style="line-height: 0.1; font-size: 12px;color: darkgray;">Pincode : {{ add.pincode }}</p>
+                            <p style="line-height: 0.1; font-size: 12px;color: darkgray;">Phone : {{ add.phone_number }}</p>
+                        </div>
+                    </label>
+                    {% endfor %}
+                
+            </div>
+            
+            <div class="mt-4 mb-5">
+                <a href="/Add_address" style="text-decoration: none;color: black; font-weight: bold; color:rgb(228, 158, 68) ;">Add Address</a>
+            </div>
+        </div>
+
+        <div class="col-lg-3 col-md-6" style="margin-top: 70px;">
+            <div class="p-4" style="background-color: rgb(248, 243, 235);border: 1px solid rgb(225, 221, 221);">
+                <h6>Order Details</h6>
+                <div class="d-flex justify-content-between mt-4">
+                    <p class="d-inline-flex" style="font-size: smaller;">Cart Total</p>
+                    <span class="d-inline-flex">
+                        <p class="d-inline-flex font-size-sm cart-total-price">₹ {{total_price}}</p>
+                    </span>
+                </div>
+                {% if prod.discount %}
+                <div class="d-flex justify-content-between">
+                    <p class="d-inline-flex" style="font-size: smaller;">Discount</p>
+                    <span class="d-inline-flex">
+                    <p class="d-inline-flex" style="font-size: smaller;">- ₹ {{prod.discount}}</p>
+                    </span>
+                </div>
+                {% endif %}
+                {% if prod.delivery_fee %}
+                <div class="d-flex justify-content-between">
+                    <p class="d-inline-flex" style="font-size: smaller;">Delivery Fee</p>
+                    <span class="d-inline-flex">
+                    <p class="d-inline-flex" style="font-size: smaller;">+ ₹ 58</p>
+                    </span>
+                </div>
+                {% endif %}
+                <div class="d-flex justify-content-between mt-3">
+                    <h6 class="d-inline-flex">Order Total</h6>
+                    <span class="d-inline-flex">
+                    <p class="d-inline-flex cart-total-price" style="font-size: smaller;">₹ {{total_price}}</p> 
+                    </span>
+                </div>
+            </div>
+            <div>
+                <a href="{% url 'Payment_details' cart.id %}"><button type="button" class="w-100 border-0 mb-5 " style="background-color: rgb(231, 152, 50); width: 270px; color: azure; height: 50px;">PROCEED TO PAYMENT</button></a>
+            </div>
+        </form>
+        </div>
+    </div>
+</div>
+
+
+
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<script>
+    $(document).ready(function () {
+        $(".quantity-input").on("change", function () {
+            var quantity = $(this).val();
+            var price = $(this).data("price");
+            console.log("Quantity:", quantity);
+            console.log("Price:", price);
+
+            // Calculate the updated price
+            var updatedPrice = price * quantity;
+            console.log("Updated Price:", updatedPrice);
+
+            // Update the displayed price
+            $(".cart-total-price").text("₹ " + updatedPrice);
+        });
+    });
+</script>
+
+
+
+
+{% endblock %}

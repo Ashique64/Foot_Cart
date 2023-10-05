@@ -1,0 +1,42 @@
+{% extends 'user_profile/profile.html' %}
+
+{% load static %}
+
+{% block title %}
+ADD-ADDRESS
+{% endblock %}
+
+{% block profile %}
+
+<div class="col-lg-8 col-md-6 bg-white mt-5 pb-5" style=" border: 0.3px solid rgb(255, 255, 255);box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); height: 660px;">
+    <form action="/Add_address" method="post"> {% csrf_token %}
+        <div class="mt-5 ms-5">
+            <h5>ADD A NEW ADDRESS</h5>
+            <div>
+                <input type="text" class="form-control mt-3 d-inline-flex" style="width: 300px;" id="addr_name" name="addr_name" placeholder="Full Name" Required>
+                <input type="text" class="form-control ms-3 mt-3 d-inline-flex" style="width: 300px;" id="addr_phone" name="addr_phone" value="+91" placeholder="Phone Number" Required>
+            </div>
+            <div class="mt-2">
+                <input type="text" class="form-control mt-3 d-inline-flex" style="width: 300px;" id="addr_pincode" name="addr_pincode" placeholder="Pincode" Required>
+                <input type="text" class="form-control ms-3 mt-3 d-inline-flex" style="width: 300px;" id="addr_locality" name="addr_locality" placeholder="Locality" Required>
+            </div>
+            <div class="mt-2">
+                <input type="text" class="form-control mt-3 d-inline-flex" style="width: 620px; height: 130px;" id="addr_postoffice" name="addr_postoffice" placeholder="House No./Post Office" Required>
+            </div>
+            <div class="mt-2">
+                <input type="text" class="form-control mt-3 d-inline-flex" style="width: 300px;" id="addr_district" name="addr_district" placeholder="District" Required>
+                <input type="text" class="form-control ms-3 mt-3 d-inline-flex" style="width: 300px;" id="addr_state" name="addr_state" placeholder="State" Required>
+            </div>
+            <div class="mt-2">
+                <input type="text" class="form-control mt-3 d-inline-flex" style="width: 300px;" id="addr_landmark" name="addr_landmark" placeholder="Landmark(Optional)">
+                <input type="text" class="form-control ms-3 mt-3 d-inline-flex" style="width: 300px;" id="addr_phone2" name="addr_phone2"  placeholder="Alternate Phone(Optional)">
+            </div>
+        </div>
+        
+        <div class="mt-5 ms-5">
+            <button type="submit" class="btn btn-primary">Submit</button>
+        </div>
+    </form>
+</div>
+
+{% endblock %}

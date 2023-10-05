@@ -1,0 +1,141 @@
+{% extends 'home_pages/base.html' %}
+
+{% load static %}
+
+{% block title %}
+PROFILE
+{% endblock %}
+
+{% block content %}
+
+<section>
+    <div class="container-fluid" style="background-color:   rgb(248, 249, 249);">
+        <div class="row d-inline-flex mb-5" style="margin-top: 100px;">
+            <div class="col-lg-3 col-md-12 ms-5">
+
+                <div class="d-inline-flex p-2 mt-5"
+                    style="background-color: rgb(255, 255, 255); width: 260px; height: 60px; border: 0.3px solid rgb(235, 215, 215);box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);">
+                    <i class="bi bi-person ms-3" style="font-size: 28px;"></i>
+                    <h5 style="margin-left: 15px; margin-top: 10px;">{{request.user.username}}</h5>
+                </div>
+
+                <div class="d-inline-flex p-2 mt-3"
+                    style="background-color: rgb(255, 255, 255); width: 260px; height: 60px;">
+                    <i class="bi bi-gear ms-3" style="font-size: 28px; color: rgb(0, 0, 0);"></i>
+                    <h6 style="margin-left: 10px; margin-top: 10px; color: rgb(146, 149, 152);">ACCOUNT SETTINGS</h6>
+                </div>
+                <div class="d-inline-flex p-2 d-flex justify-content-center"
+                    style="background-color: rgb(255, 255, 255); width: 260px; height: 60px;">
+                    <a href="/User_profile" style=" margin-top: 10px; color: rgb(146, 149, 152); text-decoration: none;">Personal Information</a>
+                </div>
+                <div class="d-inline-flex p-2 d-flex justify-content-center"
+                    style="background-color: rgb(255, 255, 255); width: 260px; height: 60px;">
+                    <a href="/wallet" style=" margin-top: 10px; color: rgb(146, 149, 152); text-decoration: none;">Wallet</a>
+                </div>
+                <div class="d-inline-flex p-2 d-flex justify-content-center"
+                    style="background-color: rgb(255, 255, 255); width: 260px; height: 60px;">
+                    <a href="/User_address" style=" margin-top: 10px; color: rgb(146, 149, 152); text-decoration: none;">Manage Address</a>
+                </div>
+
+
+                <div class="d-inline-flex p-2"
+                    style="background-color: rgb(255, 255, 255); width: 260px; height: 60px; border-top: 0.3px solid rgb(234, 231, 231);">
+                    <i class="bi bi-cart4 ms-3" style="font-size: 28px; color: rgb(0, 0, 0);"></i>
+                    <a href="/User_orders" style="text-decoration: none;"><h6 style="margin-left: 25px; margin-top: 10px; color: rgb(146, 149, 152);">MY ORDERS</h6></a>
+                    <i class="bi bi-arrow-right-circle"
+                        style="font-size: 15px; margin-top: 10px; color: rgb(146, 149, 152); margin-left: 50px;"></i>
+                </div>
+
+
+
+                <div class="d-inline-flex p-2"
+                    style="background-color: rgb(255, 255, 255); width: 260px; height: 60px; border-top: 0.3px solid rgb(234, 231, 231);">
+                    <i class="bi bi-credit-card ms-3" style="font-size: 28px; color: rgb(0, 0, 0);"></i>
+                    <h6 style="margin-left: 15px; margin-top: 10px; color: rgb(146, 149, 152);">PAYMENT METHODS</h6>
+                </div>
+                <div class="d-inline-flex p-2 d-flex justify-content-center"
+                    style="background-color: rgb(255, 255, 255); width: 260px; height: 60px;">
+                    <p style=" margin-top: 10px; color: rgb(146, 149, 152);">Debit/Credit Cards</p>
+                </div>
+                <div class="d-inline-flex p-2 d-flex justify-content-center"
+                    style="background-color: rgb(255, 255, 255); width: 260px; height: 60px;">
+                    <p style="margin-top: 10px; color: rgb(146, 149, 152);">UPI</p>
+                </div>
+                <div class="d-inline-flex p-2 d-flex justify-content-center"
+                    style="background-color: rgb(255, 255, 255); width: 260px; height: 60px;">
+                    <p style="margin-top: 10px; color: rgb(146, 149, 152);">Cash on Delivery</p>
+                </div>
+
+
+                <div class="d-inline-flex p-2"
+                    style="background-color: rgb(255, 255, 255); width: 260px; height: 60px; border-top: 0.3px solid rgb(234, 231, 231);">
+                    <i class="bi bi-box ms-3" style="font-size: 28px; color: rgb(0, 0, 0);"></i>
+                    <h6 style="margin-left: 25px; margin-top: 10px; color: rgb(146, 149, 152);">MY STUFFS</h6>
+                </div>
+                <div class="d-inline-flex p-2 d-flex justify-content-center"
+                    style="background-color: rgb(255, 255, 255); width: 260px; height: 60px;">
+                    <p style="margin-top: 10px; color: rgb(146, 149, 152);">Coupons</p>
+                </div>
+                <div class="d-inline-flex p-2 d-flex justify-content-center"
+                    style="background-color: rgb(255, 255, 255); width: 260px; height: 60px;">
+                    <a href="/wishlist" style="text-decoration: none;"><p style="margin-top: 10px; color: rgb(146, 149, 152);">My Wishlist</p></a>
+                </div>
+
+
+                <div class="d-inline-flex p-2"
+                    style="background-color: rgb(255, 255, 255); width: 260px; height: 60px; border: 0.3px solid rgb(234, 231, 231);">
+                    <i class="bi bi-box-arrow-left ms-3" style="font-size: 28px; color: rgb(0, 0, 0);"></i>
+                    <a href="/Logout" style="text-decoration: none;"><h6 style="margin-left: 25px; margin-top: 10px; color: rgb(146, 149, 152);">LOGOUT</h6></a>
+                </div>
+
+            </div>
+            {% block profile %}
+            <div class="col-lg-8 col-md-6 bg-white mt-5 pb-5" style=" border: 0.3px solid rgb(255, 255, 255);box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);">
+                <form action="{% url 'User_profile' %}" method="post"> {% csrf_token %}
+                    <div class="mt-5 ms-5">
+                        <h5 class="d-inline-flex me-5">Personal Information</h5>
+                        <div>
+                            <label for="">First Name</label>
+                            <input type="text" class="form-control mt-3 mb-3" style="width: 300px;" id="first_name" name="first_name" value="{{request.user.first_name}}" Required>
+                            <label for="">Last Name</label>
+                            <input type="text" class="form-control mt-3" style="width: 300px;" id="last_name" name="last_name" value="{{request.user.last_name}}" Required>
+                        </div>
+                    </div>
+                    <div class="mt-5 ms-5">
+                        <p>Your Gender</p>
+                        <select name="gender" id="">
+                            <option value="male">Male</option>
+                            <option value="female">Female</option>
+                            <option value="other">Other</option>
+                        </select>
+                    </div>
+                    <div class="mt-5 ms-5">
+                        <p>Your Age</p>
+                        <div>
+                            <input type="text" class="form-control mt-3" style="width: 300px;" id="age" name="age" value="{{request.user.age}}" Required>
+                        </div>
+                    </div>
+                    <div class="mt-5 ms-5">
+                        <h5 class="d-inline-flex me-5">Email Address</h5>
+                        <div>
+                            <input type="email" class="form-control mt-3" style="width: 300px;" id="email" name="email" value="{{request.user.email}}" Required>
+                        </div>
+                    </div>
+                    <div class="mt-5 ms-5">
+                        <h5 class="d-inline-flex me-5">Phone Number</h5>
+                        <div>
+                            <input type="text" class="form-control mt-3" style="width: 300px;" id="phone" name="phone" value="{{request.user.phone_number}}" Required>
+                        </div>
+                    </div>
+                    <div class="mt-4 ms-5">
+                        <button type="submit" class="btn btn-primary">Submit</button>
+                    </div>
+                </form>
+            </div>
+            {% endblock %}
+        </div>
+    </div>
+</section>
+
+
+{% endblock %}

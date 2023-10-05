@@ -1,0 +1,25 @@
+body {
+    background-image: url(../img/9019805.jpg);
+    background-size: 100%;
+    background-repeat: no-repeat;
+}
+
+.sign-up{
+    margin-left: 450px;
+    margin-top: 150px;
+}
+a{
+    text-decoration: none;
+    color: rgb(255, 255, 255);
+}
+a:hover{
+    color: rgb(0,122, 255);
+}
+.log-in{
+    margin-left: 430px;
+    margin-top: 160px;
+}
+.otp{
+    margin-left: 430px;
+    margin-top: 200px; 
+}

@@ -1,0 +1,108 @@
+{% extends 'home_pages/base.html' %}
+
+{% load static %}
+
+{% block title %}
+PRODUCT DETAILS
+{% endblock %}
+
+{% block content %}
+<div class="container">
+  <div class="row">
+    <div class="col-lg-2 d-none d-md-block"></div>
+
+    <div class="col-lg-5 col-md-12" style="margin-top: 160px;">
+      <div class="magnify" id="variantImage" style="background-size: cover; background-position: center center; height: 450px; border: 1px solid rgb(237, 237, 237);"><img src="{{ variants.0.image.url }}" alt=""></div>
+    </div>
+
+    <div class="col-lg-5 col-md-12 d-flex justify-content-center" style="margin-top: 160px;">
+      <div>
+        <h5 style="color: rgb(224, 184, 132); font-weight: 400;">{{ prod.brand }}</h5>
+        <h5 style="color: dimgray; font-weight: 400">{{ prod.name }}</h5>
+
+        <h6 id="variantPrice" style="color: dimgray; font-weight: 400">
+          {% if variants.0.discount %}
+              <span style="color: gray;">₹ {{ variants.0.discounted_price|floatformat:2 }}</span>
+              <span class="ms-2" style="text-decoration: line-through; color: rgb(11, 138, 181);">₹ {{ variants.0.price }}</span>
+          {% else %}
+              ₹ {{ variants.0.price }}
+          {% endif %}
+        </h6>
+
+        <h6 id="variantquantity" style="color: rgb(226, 145, 40); font-weight: 400">
+          {% if variants.0.quantity > 0 %}
+            Stock Available :{{ variants.0.quantity  }}
+          {% else %}
+            Out of Stock
+          {% endif %}
+        </h6>
+
+        <div class="mt-4">
+          <label for="colorSelect" style="color: dimgray; font-weight: 400;">Select Color:</label>
+          <select class="form-select" id="colorSelect" onchange="location.href = '{% url 'Product_details' prod.id %}?color=' + this.value;">
+            {% for color in all_colors %}
+            <option value="{{ color.id }}" {% if color.id == selected_color %}selected{% endif %}
+                    data-price="{{ color.variants.0.price }}" data-image="{{ color.variants.0.image.url }}">
+              {{ color.name }}
+            </option>
+            {% endfor %}
+          </select>
+        </div>
+        
+        <div class="mt-3">
+          <label for="sizeSelect" style="color: dimgray; font-weight: 400;">Select Size:</label>
+          <select class="form-select" id="sizeSelect">
+            <option disabled selected>Choose Size</option>
+            {% for size in selected_sizes %}
+            <option>{{ size.name }}</option>
+            {% endfor %}
+          </select>
+        </div>
+        
+
+        <div class="mt-5"> 
+          <a href="{% url 'Add_cart' prod.id %}?color={{ selected_color }}"><button type="button" class="btn" style="background-color: rgb(231, 152, 50); width: 270px; color: azure;"><i class="bi bi-cart me-2"></i>ADD TO CART</button></a>
+        </div>
+        <div class="mt-3">
+          <a href="{% url 'add_wishlist' prod.id %}"><button type="button" class="btn" style="background-color: rgb(255, 255, 255); width: 270px; color: rgb(231, 152, 50); border: 1px solid rgb(231, 152, 50);"><i class="bi bi-heart me-2"></i> SAVE TO WISHLIST</button></a>
+        </div>
+
+        <div class="mt-5">
+          <div class="card text-start mt-5 mb-5" style="width: 270px;">
+            <div class="card-header">
+              <ul class="nav nav-tabs card-header-tabs">
+                <li class="nav-item">
+                  <a class="nav-link active" style="color: dimgray;" aria-current="true" href="#">PRODUCT DESCRIPTION</a>
+                </li>
+              </ul>
+            </div>
+            <div class="card-body overflow-auto">
+              <p style="font-size: 13px;" class="card-text" id="variantDescription">
+                {{ variants.0.discription }}
+              </p>
+            </div>
+          </div>
+        </div>
+
+      </div>
+    </div>
+
+  </div>
+</div>
+
+
+
+<script>
+  const colorSelect = document.getElementById('colorSelect');
+  const variantPrice = document.getElementById('variantPrice');
+  const variantImage = document.getElementById('variantImage');
+  const variantDescription = document.getElementById('variantDescription');
+
+  colorSelect.addEventListener('change', function() {
+    const selectedOption = this.options[this.selectedIndex];
+    variantPrice.textContent = `₹ ${selectedOption.getAttribute('data-price')}`;
+    variantImage.style.backgroundImage = `url('${selectedOption.getAttribute('data-image')}')`;
+    variantDescription.textContent = selectedOption.getAttribute('data-description');
+  });
+</script>
+{% endblock %}

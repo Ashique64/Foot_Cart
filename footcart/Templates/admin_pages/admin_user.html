@@ -1,0 +1,115 @@
+{% extends 'admin_pages/base_admin.html' %}
+
+{% block content %}
+<div class="container" style="position: relative; top: 50px; padding: 50px;">
+    <h3 class="mb-4">Admin User Page</h3>
+    <div class="row">
+        <div class="col-lg-9 col-md-12">
+            <!-- User List -->
+            <div class="card mb-4">
+                <div class="card-header">
+                    <h5>User List</h5>
+                </div>
+                <div class="card-body">
+                    <table class="table table-striped">
+                        <thead>
+                            <tr>
+                                <th>ID</th>
+                                <th>User Name</th>
+                                <th>Email</th>
+                                <th>Phone</th>
+                                <th>Actions</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <!-- Loop through users here -->
+                            {% for user in adm_users %}
+                            <tr>
+                                <td>{{user.id}}</td>
+                                <td>{{user.username}}</td>
+                                <td>{{user.email}}</td>
+                                <td>{{user.phone_number}}</td>
+                                <td>
+                                    {% if user.is_active %}
+                                    <a href="block_user/{{ user.id }}" class="btn btn-danger btn-sm">Block</a>
+                                    {% else %}
+                                    <a href="unblock_user/{{ user.id }}" class="btn btn-primary btn-sm">Unblock</a>
+                                    {% endif %}
+                                  </td>
+                                  
+                            </tr>
+                            {% endfor%}
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <nav aria-label="Page navigation" style="position: relative; right: 130px;">
+        <ul class="pagination justify-content-center">
+            {% if adm_users.has_previous %}
+                <li class="page-item">
+                    <a class="page-link" href="?page=1">First</a>
+                </li>
+                <li class="page-item">
+                    <a class="page-link" href="?page={{ adm_users.previous_page_number }}">Previous</a>
+                </li>
+            {% endif %}
+            
+            <li class="page-item active">
+                <span class="page-link">{{ adm_users.number }}</span>
+            </li>
+
+            {% if adm_users.has_next %}
+                <li class="page-item">
+                    <a class="page-link" href="?page={{ adm_users.next_page_number }}">Next</a>
+                </li>
+                <li class="page-item">
+                    <a class="page-link" href="?page={{ adm_users.paginator.num_pages }}">Last</a>
+                </li>
+            {% endif %}
+        </ul>
+    </nav>
+</div>
+
+<!-- Include Bootstrap JS -->
+<script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.1/dist/umd/popper.min.js"></script>
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+
+<style>
+    /* Custom styles for the container and card */
+    .container {
+        padding: 20px;
+    }
+
+    .card {
+        width: 100%;
+    }
+
+    /* Custom styles for the table */
+    table {
+        width: 100%;
+    }
+
+    /* Responsive adjustments */
+    @media (max-width: 768px) {
+        .container {
+            position: relative;
+            top: 0;
+        }
+
+        .card {
+            width: auto;
+        }
+    }
+
+    @media (max-width: 576px) {
+        .container {
+            padding: 10px;
+        }
+    }
+</style>
+
+{% endblock %}

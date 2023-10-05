@@ -1,0 +1,185 @@
+{% extends 'home_pages/base.html' %}
+
+{% load static %}
+
+{% block title %}
+PRODUCT DETAILS
+{% endblock %}
+
+{% block content %}
+
+<div class="container-fluid mb-5" style="margin-top: 85px;">
+    <div class="row">
+        <div class="col-lg-8 col-md-6 ms-3 mt-5">
+            <div>
+                <h5 style="color: rgb(228, 158, 68);">MY CART</h5>
+            </div>
+            {% for item in cart_items %}
+            <div class="card mb-3 p-3">
+                <div class="card-body">
+                    <div class="row">
+                        <div class="col-md-2">
+                            <img src="{{ item.variant.image.url }}" alt="{{ item.product.name }}" class="img-fluid">
+                        </div>
+                        <div class="col-md-2 d-flex justify-content-center">
+                            <h6 class="card-subtitle mb-2">{{item.product.name}}</h6>
+                        </div>
+                        <div class="col-md-2 d-flex justify-content-center">
+                            <p class="card-subtitle mb-2">Size:{{ item.variant.size.name }}</p>
+                        </div>
+                        <div class="col-md-2 d-flex justify-content-center">
+                            <p class="card-subtitle mb-2">Price:<br>{{ item.variant.price }}</p>
+                        </div>
+                        <div class="col-md-1 d-flex justify-content-center">
+                            <p class="card-subtitle mb-2">{{ item.variant.color.name }}</p>
+                        </div>
+                        <div class="col-md-2 d-flex justify-content-center" style="height: 40px; width: 90px;">
+                            <input type="number" min="1" max="10" value="{{item.quantity}}" class="form-control quantity-input"
+                                data-price="{{ item.variant.price }}" data-product-id="{{ item.product.id }}">
+                        </div>
+                        <div class="col-md-1 d-flex justify-content-end">
+                            <a href="{% url 'Remove_cart_item' item.id %}"> <i class="bi bi-trash" style="cursor: pointer; color: black;"></i></a>
+                        </div>
+
+                    </div>
+                </div>
+            </div>
+            {% endfor %}
+        </div>
+
+        <div class="col-lg-3 col-md-6" style="margin-top: 80px;">
+            <div class="p-4" style="background-color: rgb(248, 243, 235);border: 1px solid rgb(225, 221, 221);">
+                <h6>Order Details</h6>
+                <div class="d-flex justify-content-between mt-4">
+                    <p class="d-inline-flex" style="font-size: smaller;">Cart Total</p>
+                    <span class="d-inline-flex">
+                        <p class="d-inline-flex font-size-sm cart-total-price">₹ {{ total_price }}</p>
+                    </span>
+                </div>
+                {% if prod.discount %}
+                <div class="d-flex justify-content-between">
+                    <p class="d-inline-flex" style="font-size: smaller;">Discount</p>
+                    <span class="d-inline-flex">
+                        <p class="d-inline-flex" style="font-size: smaller;">- ₹ {{prod.discount}}</p>
+                    </span>
+                </div>
+                {% endif %}
+                {% if prod.delivery_fee %}
+                <div class="d-flex justify-content-between">
+                    <p class="d-inline-flex" style="font-size: smaller;">Delivery Fee</p>
+                    <span class="d-inline-flex">
+                        <p class="d-inline-flex" style="font-size: smaller;">+ ₹ 56</p>
+                    </span>
+                </div>
+                {% endif %}
+
+                <div class="d-flex justify-content-between mt-3">
+                    <h6 class="d-inline-flex">Order Total</h6>
+                    <span class="d-inline-flex">
+                        <p class="d-inline-flex cart-total-price" style="font-size: smaller;">₹ {{ total_price }}</p>
+                    </span>
+                </div>
+            </div>
+            <div>
+                <a href="{% url 'Shipping_details' cart.id %}"><button type="button" class="w-100 border-0 mb-5 "
+                        style="background-color: rgb(231, 152, 50); width: 270px; color: azure; height: 50px;">PROCEED
+                        TO SHIPPING</button></a>
+            </div>
+
+            
+
+        </div>
+    </div>
+</div>
+<style>
+    .cart_icon:hover {
+        color: #e91e1e;
+    }
+</style>
+
+
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<script>
+    $(document).ready(function () {
+        // Function to update cart total price based on quantities
+        function updateCartTotal() {
+            var totalUpdatedPrice = 0;
+    
+            $(".quantity-input").each(function () {
+                var quantity = parseInt($(this).val());
+                var price = parseFloat($(this).data("price"));
+                var productId = $(this).data("product-id");
+    
+                // Calculate the updated price for each product
+                var updatedPrice = price * quantity;
+    
+                // Update the displayed price for this product
+                var cartTotalPriceElement = $(this).closest(".card-body").find(".cart-total-price");
+                cartTotalPriceElement.text("₹ " + updatedPrice.toFixed(2));
+    
+                totalUpdatedPrice += updatedPrice;
+    
+                // Get the CSRF token from the cookie
+                var csrftoken = getCookie('csrftoken');
+    
+                // Send an AJAX request to update the server
+                $.ajax({
+                    url: "{% url 'update_quantity_endpoint' %}",
+                    method: "POST",
+                    data: {
+                        quantity: quantity,
+                        product_id: productId
+                    },
+                    headers: { "X-CSRFToken": csrftoken },  // Include the CSRF token in the headers
+                    success: function (response) {
+                        console.log(response)
+                        if (response.success) {
+                            // Update the cart total price after receiving the response
+                            $(".cart-total-price").text("₹ " + response.total_price); // Remove decimal
+                            $("#order-total").text("₹ " + response.total_price); // Remove decimal
+                        }
+                    },
+                    error: function (xhr, status, error) {
+                        // Handle error
+                    }
+                });
+            });
+    
+            // Update the cart total price
+            $("#cart-total").text("₹ " + totalUpdatedPrice.toFixed(0)); // Remove decimal
+        }
+    
+        $(".quantity-input").on("change", function () {
+            updateCartTotal();  // Manually trigger the update when quantity changes
+        });
+    
+        // Function to get the CSRF token from the cookie
+        function getCookie(name) {
+            var cookieValue = null;
+            if (document.cookie && document.cookie !== '') {
+                var cookies = document.cookie.split(';');
+                for (var i = 0; i < cookies.length; i++) {
+                    var cookie = $.trim(cookies[i]);
+                    // Does this cookie string begin with the name we want?
+                    if (cookie.substring(0, name.length + 1) === (name + '=')) {
+                        cookieValue = decodeURIComponent(cookie.substring(name.length + 1));
+                        break;
+                    }
+                }
+            }
+            return cookieValue;
+        }
+    
+        // Call the function on page load to initialize cart total
+        updateCartTotal();
+    });
+    
+</script>
+
+
+
+
+
+
+
+{% endblock %}

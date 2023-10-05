@@ -1,0 +1,100 @@
+{% extends 'user_profile/profile.html' %}
+
+{% load static %}
+
+{% block title %}
+ORDER INVOICE
+{% endblock %}
+
+{% block profile %}
+
+<div class="col-lg-8 col-md-6 bg-white mt-5 p-5" id="invoiceContainer" style="border: 0.3px solid rgb(255, 255, 255); box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); height: 100%;">
+    <h5 style="display: flex; justify-content: center; font-weight: 550;">INVOICE</h5>
+    <h4 class="mt-4" style="display: flex; justify-content: center; font-weight: 400;">FOOT CART</h4>
+    <h6 style="display: flex; justify-content: center;color: rgb(173, 173, 171);">customercare@footcart.com</h6>
+    <div class="row mt-5">
+        <div class="col-lg-6">
+            <h6 style="font-weight: 600;">SHIPPING FROM :</h6>
+            <h6 style="font-size: 13px; font-weight: bold;">FOOTCART</h6>
+            <h6 style="font-size: 13px;">House No:1298</h6>
+            <h6 style="font-size: 13px;">Delhi</h6>
+            <h6 style="font-size: 13px;">Delhi(279326), India</h6>
+            <h6 style="font-size: 13px;">Ph : 8606128064</h6>
+        </div>
+        <div class="col-lg-6">
+            <h6 style="font-weight: 600;">SHIPPING TO : </h6>
+            <h6 style="font-size: 13px; font-weight: bold;">{{orders.address.full_name}}</h6>
+            <h6 style="font-size: 13px;">{{orders.address.address}}</h6>
+            <h6 style="font-size: 13px;">{{orders.address.locality}} ({{orders.address.pincode}}) , {{orders.address.district}}</h6>
+            <h6 style="font-size: 13px;">{{orders.address.state}}</h6>
+            <h6 style="font-size: 13px;">{{orders.address.phone_number}}</h6>
+        </div>
+    </div>
+    <div class="mt-4">
+        <h6 style="font-weight: 600;">INVOICE DATE :</h6>
+        <p>{{orders.order_date}}</p>
+    </div>
+    <div class="mt-4">
+        <h6 style="font-weight: 600;">PAYMENT TYPE :</h6>
+        <p>{{orders.payment_method}}</p>
+    </div>
+    <h6 style="display: flex; justify-content: center; font-weight: 550;">ITEMS SUMMARY</h6>
+    <div>
+        <table class="table">
+            <thead>
+                <tr>
+                    <th scope="col">NO.</th>
+                    <th scope="col">ITEMS</th>
+                    <th scope="col">QUANTITY</th>
+                    <th scope="col">PRICE</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for item in order_items %}
+                <tr>
+                    <th scope="row">{{ forloop.counter }}</th>
+                    <td>{{ item.variant.product.name }}</td>
+                    <td>{{ item.quantity }}</td>
+                    <td>₹ {{ item.variant.price }}</td>
+                </tr>
+                {% endfor %}
+                <tr>
+                    <td style="font-size: 13px;">DISCOUNT:</td>
+                    <td></td>
+                    <td></td>
+                    <td>₹ {{ orders.coupon_discount_amount }}</td>
+                </tr>
+                <tr>
+                    <td style="font-weight: bold;">TOTAL:</td>
+                    <td></td>
+                    <td></td>
+                    <td style="font-weight: bold;">₹ {{ orders.total_price }}</td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+    <div style="display: flex; justify-content: center;"><button type="button" id="pdfButton" class="btn btn-outline-info">Download</button></div>
+</div>
+
+<!-- Include the html2pdf library -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.9.3/html2pdf.bundle.min.js"></script>
+<script>
+    // Update the event listener to target the correct ID
+    document.getElementById("pdfButton").addEventListener("click", function () {
+        // Select the appropriate element for PDF conversion
+        const invoiceContainer = document.getElementById("invoiceContainer");
+
+        // Define PDF generation options
+        const pdfOptions = {
+            filename: 'invoice.pdf',
+            image: { type: 'jpeg', quality: 1.0 }, // Adjust the image quality (1.0 for maximum quality)
+            html2canvas: { scale: 2 }, // Adjust the scale for higher quality
+            jsPDF: { unit: 'mm', format: 'a4', orientation: 'portrait' }
+        };
+
+        // Generate and save the PDF
+        html2pdf().from(invoiceContainer).set(pdfOptions).save();
+    });
+</script>
+
+{% endblock %}

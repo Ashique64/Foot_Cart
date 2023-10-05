@@ -1,0 +1,283 @@
+{% extends 'home_pages/base.html' %}
+
+{% load static %}
+
+{% block title %}
+FORMALS
+{% endblock %}
+
+{% block content %}
+
+<div class="container-fluid mb-5" style="background-color: rgb(255, 255, 255);">
+    <div class="row">
+        <div class="col-lg-3 col-md-6 d-none d-md-block" style="margin-top: 84px;">
+            <div class="p-2 ms-2" style="background-color: rgb(255, 255, 255); width: 260px; height: 50px;">
+                <h6 style="margin-left: 10px; margin-top: 7px; color: rgb(146, 149, 152);">FILTERS</h6>
+            </div>
+
+            <div class="p-2 ms-2" style="background-color: rgb(255, 255, 255); width: 260px;max-height: 260px;
+                            border-top: 0.5px solid rgb(211, 219, 224);overflow-y: auto;">
+                <h6 style="margin-left: 10px; margin-top: 10px; color: rgb(146, 149, 152);">SIZE</h6>
+                <div class="mt-3" style="margin-left: 10px; color: rgb(146, 149, 152);">
+                    {% for size in sizes %}
+                    <div>
+                        <input type="checkbox" id="size-{{ size.id }}" class="size-checkbox" name="size[]"
+                            value="{{ size.id }}" {% if size.id|stringformat:"s" in selected_sizes %}checked{% endif %}>
+
+                        <label class="ms-2" for="size-{{ size.id }}">UK {{ size.name }}</label>
+                    </div>
+                    {% endfor %}
+                </div>
+            </div>
+
+            <div class="p-2 ms-2" style="background-color: rgb(255, 254, 254); width: 260px; max-height: 260px;
+                    border-top: 0.5px solid rgb(211, 219, 224);overflow-y: auto;">
+                <h6 style="margin-left: 10px; margin-top: 10px; color: rgb(146, 149, 152);">BRANDS</h6>
+                <div class="mt-3" style="margin-left: 10px; color: rgb(146, 149, 152);">
+                    {% for brand in brands %}
+                    <div>
+                        <input type="checkbox" id="brand-{{ brand.brand }}" class="brand-checkbox" name="brand[]"
+                            value="{{ brand.brand }}" {% if brand.brand in selected_brands %}checked{% endif %}>
+
+                        <label class="ms-2" for="brand-{{ brand.brand }}">{{ brand.brand }}</label>
+                    </div>
+                    {% endfor %}
+
+                    <a style="text-decoration: none; font-size: 13px;" href="">MORE</a>
+                </div>
+            </div>
+
+            <div class="p-2 ms-2" style="background-color: rgb(255, 255, 255); width: 260px; max-height: 260px;
+                            border-top: 0.5px solid rgb(211, 219, 224);overflow-y: auto;">
+                <h6 style="margin-left: 10px; margin-top: 10px; color: rgb(146, 149, 152);">COLOR</h6>
+                <div class="mt-3" style="margin-left: 10px; color: rgb(146, 149, 152);">
+                    {% for color in colors %}
+                    <div>
+                        <input type="checkbox" id="color-{{ color.id }}" class="color-checkbox" name="color[]"
+                            value="{{ color.id }}" {% if color.id|stringformat:"s" in selected_colors %}checked{% endif%}>
+
+                        <label class="ms-2" for="color-{{ color.id }}">{{ color.name }}</label>
+                    </div>
+                    {% endfor %}
+
+                    <a style="text-decoration: none; font-size: 13px;" href="">MORE</a>
+                </div>
+            </div>
+
+            <div class="p-2 ms-2 " style="background-color: rgb(255, 255, 255); width: 260px; height: 280px;
+                                border-top: 0.5px solid rgb(211, 219, 224);">
+                <h6 style="margin-left: 10px; margin-top: 10px; color: rgb(146, 149, 152);">DISCOUNT</h6>
+                <div class="mt-3" style="margin-left: 10px; color: rgb(146, 149, 152);">
+                    <div>
+                        <input type="checkbox" id="size-6" name="uk6" value="size-6">
+                        <label class="ms-2" for="size-6">10% BELOW</label>
+                    </div>
+                    <div>
+                        <input type="checkbox" id="size-7" name="uk7" value="size-7">
+                        <label class="ms-2" for="size-7">10% MORE</label>
+                    </div>
+                    <div>
+                        <input type="checkbox" id="size-8" name="uk8" value="size-8">
+                        <label class="ms-2" for="size-8">20% MORE</label>
+                    </div>
+                    <div>
+                        <input type="checkbox" id="size-9" name="uk9" value="size-9">
+                        <label class="ms-2" for="size-9">30% MORE</label>
+                    </div>
+                    <div>
+                        <input type="checkbox" id="size-10" name="uk10" value="size-10">
+                        <label class="ms-2" for="size-10">40% MORE</label>
+                    </div>
+                    <div>
+                        <input type="checkbox" id="size-11" name="uk11" value="size-11">
+                        <label class="ms-2" for="size-11">50% MORE</label>
+                    </div>
+                    <div>
+                        <input type="checkbox" id="size-12" name="uk12" value="size-12">
+                        <label class="ms-2" for="size-12">60% MORE</label>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+
+        <div class="col-lg-9 col-md-6" style="margin-top: 90px;">
+            <div class="mt-5 p-4 d-flex align-items-center justify-content-start"
+                style="font-family: 'Lucida Sans'; color: rgb(0, 0, 0); height: 100px; width: 935px;">
+                <h4>WEDDING SHOES</h4>
+            </div>
+
+            <div class="mt-3 me-5 d-flex align-items-center justify-content-end">
+                <form method="GET" action="{% url 'Weddings' %}">
+                    <h6 class="mt-2">SORT BY</h6><span>
+                        <select name="sort_by" onchange="this.form.submit()">
+                            <option value="price_low_to_high" {% if selected_sort == 'price_low_to_high' %}selected{%endif %}>Price Low to High</option>
+                            <option value="price_high_to_low" {% if selected_sort == 'price_high_to_low' %}selected{%endif %}>Price High to Low</option>
+
+                        </select>
+                    </span>
+                </form>
+            </div>
+
+            <div class="row mt-3">
+                {% for wedding in wedding_shoes %}
+                <div class="col-lg-4 col-md-6 mt-4">
+                    <div
+                        style="height: 440px; border: 1px solid rgb(228, 225, 225);  border-radius: 10px; overflow: hidden;">
+                        <div
+                            style="background-image: url('{{ wedding.image.url }}'); background-size: cover; background-position: center center; height: 320px;">
+                        </div>
+                        <div class="ms-4 mt-2">
+                            <a style="text-decoration: none; display: inline-block;max-width: 250px;overflow: hidden; white-space: nowrap;" href="{% url 'Product_details' wedding.product.id %}">
+                                <h6 class="fw-semibold" style="cursor: pointer; color: brown;">{{ wedding.product.name}}</h6>
+                            </a>
+                            <p class="fw-semibold">
+                                <span style="color: black;">&#8377;</span>
+                                {% if wedding.discount %}
+                                    <span style="color: rgb(154, 157, 158);">{{ wedding.discounted_price|floatformat:2 }}</span>
+                                    <span class="ms-3" style="color: black;">&#8377;</span>
+                                    <span style="color: rgb(11, 138, 181); text-decoration: line-through;">{{ wedding.price|floatformat:2 }}</span>
+                                {% else %}
+                                    <span style="color: rgb(154, 157, 158);">{{ wedding.price|floatformat:2 }}</span>
+                                {% endif %}
+                            </p>
+
+                            <h6 class="text-black-50 fw-semibold">{{ wedding.product.brand }}</h6>
+                        </div>
+                    </div>
+                </div>
+                {% endfor %}
+
+            </div>
+
+            <nav aria-label="Page navigation example" class="mt-5 mb-5 d-inline-flex"
+                style="position: relative;left: 37%;">
+                <ul class="pagination">
+                    {% if wedding_shoes.has_previous %}
+                    <li class="page-item"><a class="page-link" href="?page=1">First</a></li>
+                    <li class="page-item"><a class="page-link"
+                            href="?page={{ wedding_shoes.previous_page_number }}">Prev</a></li>
+                    {% endif %}
+
+                    {% for page_num in wedding_shoes.paginator.page_range %}
+                    <li class="page-item{% if page_num == wedding_shoes.number %} active{% endif %}">
+                        <a class="page-link" style="width: 50px; display: flex; justify-content: center;" href="?page={{ page_num }}">{{ page_num }}</a>
+                    </li>
+                    {% endfor %}
+
+                    {% if wedding_shoes.has_next %}
+                    <li class="page-item"><a class="page-link" href="?page={{ wedding_shoes.next_page_number }}">Next</a>
+                    </li>
+                    <li class="page-item"><a class="page-link"
+                            href="?page={{ wedding_shoes.paginator.num_pages }}">Last</a></li>
+                    {% endif %}
+                </ul>
+            </nav>
+
+        </div>
+    </div>
+</div>
+
+
+<script>
+    // Select the size checkboxes
+    const sizeCheckboxes = document.querySelectorAll('.size-checkbox');
+
+    // Listen for changes in the size checkboxes
+    sizeCheckboxes.forEach((checkbox) => {
+        checkbox.addEventListener('change', () => {
+            updateFilters();
+        });
+    });
+
+    // Select the brand checkboxes
+    const brandCheckboxes = document.querySelectorAll('.brand-checkbox');
+
+    // Listen for changes in the brand checkboxes
+    brandCheckboxes.forEach((checkbox) => {
+        checkbox.addEventListener('change', () => {
+            updateFilters();
+        });
+    });
+
+    // Select the color checkboxes
+    const colorCheckboxes = document.querySelectorAll('.color-checkbox');
+
+    // Listen for changes in the color checkboxes
+    colorCheckboxes.forEach((checkbox) => {
+        checkbox.addEventListener('change', () => {
+            updateFilters();
+        });
+    });
+
+    function updateFilters() {
+        // Get the selected sizes
+        const selectedSizes = Array.from(sizeCheckboxes)
+            .filter((checkbox) => checkbox.checked)
+            .map((checkbox) => checkbox.value);
+
+        // Get the selected brands
+        const selectedBrands = Array.from(brandCheckboxes)
+            .filter((checkbox) => checkbox.checked)
+            .map((checkbox) => checkbox.value);
+
+        // Get the selected colors
+        const selectedColors = Array.from(colorCheckboxes)
+            .filter((checkbox) => checkbox.checked)
+            .map((checkbox) => checkbox.value);
+
+        // Update the URL with selected filters
+        const url = new URL(window.location.href);
+        url.searchParams.delete('size');
+        url.searchParams.delete('brand');
+        url.searchParams.delete('color');
+
+        selectedSizes.forEach((size) => {
+            url.searchParams.append('size', size);
+        });
+
+        selectedBrands.forEach((brand) => {
+            url.searchParams.append('brand', brand);
+        });
+
+        selectedColors.forEach((color) => {
+            url.searchParams.append('color', color);
+        });
+
+        window.location.href = url.toString();
+    }
+
+    // Show/hide additional items in filters
+    const showMoreSizesLink = document.getElementById('show-more-sizes');
+    const showMoreBrandsLink = document.getElementById('show-more-brands');
+    const showMoreColorsLink = document.getElementById('show-more-colors');
+
+    if (showMoreSizesLink) {
+        showMoreSizesLink.addEventListener('click', (e) => {
+            e.preventDefault();
+            const sizeFilter = document.querySelector('.size-checkbox');
+            sizeFilter.style.maxHeight = 'none';
+            showMoreSizesLink.style.display = 'none';
+        });
+    }
+
+    if (showMoreBrandsLink) {
+        showMoreBrandsLink.addEventListener('click', (e) => {
+            e.preventDefault();
+            const brandFilter = document.querySelector('.brand-checkbox');
+            brandFilter.style.maxHeight = 'none';
+            showMoreBrandsLink.style.display = 'none';
+        });
+    }
+
+    if (showMoreColorsLink) {
+        showMoreColorsLink.addEventListener('click', (e) => {
+            e.preventDefault();
+            const colorFilter = document.querySelector('.color-checkbox');
+            colorFilter.style.maxHeight = 'none';
+            showMoreColorsLink.style.display = 'none';
+        });
+    }
+</script>
+
+{% endblock %}

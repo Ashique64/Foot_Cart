@@ -1,0 +1,71 @@
+{% extends 'admin_pages/base_admin.html' %}
+
+{% block content %}
+<div class="container mt-4" style="position: relative; left: 80px; width: 1100px; padding: 50px;">
+    <h3 class="mb-4 mt-5">Edit Product Variant</h3>
+    <form method="post" action="{% url 'Edit_variant' variant.id %}" enctype="multipart/form-data">
+        {% csrf_token %}
+        <div class="form-group d-inline-flex" style="width: 70%;">
+            <div>
+                <label for="status">Product Size</label>
+                <select class="form-control" id="size" name="edit_prod_size" style="width: 300px;" required>
+                    {% for size in sizes %}
+                    <option value="{{size.name}}">{{size.name}}</option>
+                    {% endfor %}
+                </select>
+            </div>
+            
+            <div style="margin-left: 100px;">
+                <label for="status">Product Color</label>
+                <select class="form-control" id="color" name="edit_prod_color" style="width: 300px;" required>
+                    {% for color in colors %}
+                    <option value="{{color.name}}">{{color.name}}</option>
+                    {% endfor %}
+                </select>
+            </div>
+            
+        </div>
+        <div class="form-group d-inline-flex" style="width: 70%;">
+            <div>
+                <label for="name">Product Price</label>
+                <input type="text" class="form-control" id="name" name="edit_prod_price" value="{{variant.price}}" style="width: 300px;" required>
+            </div>
+            
+            <div style="margin-left: 100px;">
+                <label for="name">Product Discount</label>
+                <input type="text" class="form-control" id="name" name="edit_prod_discount" value="{{ variant.discount }}" style="width: 300px;">
+            </div>
+        </div>
+        <div class="form-group d-inline-flex" style="width: 70%;">
+            <div>
+                <label for="name">Product Quantity</label>
+                <input type="text" class="form-control" id="name" name="edit_prod_qunatity" value="{{ variant.quantity }}" style="width: 300px;" required>
+            </div>
+            <div style="margin-left: 100px;">
+                <label for="image" class="col-md-2 col-form-label">Image</label>
+                <div class="col-md-4">
+                    <input type="file" id="image" name="edit_prod_image" accept="image/*" required>
+                </div>
+            </div>
+            
+        </div>
+
+        <div class="form-group d-inline-flex" style="width: 70%;">
+            
+            <div >
+                <label for="description">Product Description</label>
+                <textarea class="form-control" id="description" name="edit_prod_description" rows="4" style="width: 300px;" required>{{ variant.discription }}</textarea>
+            </div>
+            
+        </div>
+
+        <div class="form-group d-inline-flex" style="width: 70%;">
+            <div class="mt-4>
+                <a href="{% url 'Variant' variant.id %}"><button type="submit" class="btn btn-primary">Submit</button></a>
+            </div>
+        </div>
+       
+    </form>
+    
+</div>
+{% endblock %}

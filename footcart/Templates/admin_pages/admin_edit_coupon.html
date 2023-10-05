@@ -1,0 +1,67 @@
+{% extends 'admin_pages/base_admin.html' %}
+
+{% block content %}
+<div class="container mt-4" style="position: relative; left: 80px; width: 1100px; padding: 50px;">
+    <h3 class="mb-4 mt-5">Edit Coupon</h3>
+    <form method="post" action="{% url 'Admn_edit_coupons' coupon.id %}" enctype="multipart/form-data">
+        {% csrf_token %}
+        <div class="form-group d-inline-flex" style="width: 70%;">
+            <div>
+                <label for="edit_code">Coupon code</label>
+                <input type="text" class="form-control" id="edit_code" name="edit_code" value="{{coupon.code}}" style="width: 300px;" required>
+            </div>
+            
+            <div style="margin-left: 100px;">
+                <label for="edit_discount_type">Discount Type</label>
+                <select class="form-control" id="edit_discount_type" name="edit_discount_type" value="{{coupon.discount_type}}" style="width: 300px;" required>
+                    <option value="percentage">Percentage</option>
+                    <option value="fixed_amount">Fixed Amount</option>
+                </select>
+            </div>
+            
+        </div>
+        
+        <div class="form-group d-inline-flex" style="width: 70%;">
+            <div>
+                <label for="edit_coupon_discount">Discount</label>
+                <input type="text" class="form-control" id="edit_coupon_discount" name="edit_coupon_discount" value="{{coupon.discount}}" style="width: 300px;" required>
+            </div>
+            <div style="margin-left: 100px;">
+                <label for="edit_minimum_amount">Minimum Amount</label>
+                <input type="text" class="form-control" id="edit_minimum_amount" name="edit_minimum_amount" value="{{coupon.minimum_amount}}" style="width: 300px;" required>
+            </div>
+        </div>
+        <div class="form-group d-inline-flex" style="width: 70%;">
+            <div>
+                <label for="edit_valid_from">Valid From</label>
+                <input type="datetime-local" class="form-control" id="edit_valid_from" name="edit_valid_from" value="{{coupon.valid_from}}" style="width: 300px;" required>
+            </div>
+            <div style="margin-left: 100px;">
+                <label for="edit_valid_to">Valid To</label>
+                <input type="datetime-local" class="form-control" id="edit_valid_to" name="edit_valid_to" value="{{coupon.valid_to}}" style="width: 300px;" required>
+            </div>
+        </div>
+        <div class="form-group d-inline-flex" style="width: 70%;">
+            <div>
+                <label for="edit_coupon_description">Coupon Description</label>
+                <textarea class="form-control" id="edit_coupon_description" name="edit_coupon_description" rows="4" style="width: 300px;" required>{{coupon.description}}</textarea>
+            </div>
+            <div style="margin-left: 100px;">
+                <label for="edit_coupon_status">Status</label>
+                <select class="form-control" id="edit_coupon_status" name="edit_coupon_status" style="width: 300px;" required>
+                    <option value="True">Active</option>
+                    <option value="False">Inactive</option>
+                </select>
+            </div>
+        </div>
+
+        <div class="form-group d-inline-flex" style="width: 70%;">
+            <div class="mt-4>
+                <a href=""><button type="submit" class="btn btn-primary">Submit</button></a>
+            </div>
+        </div>
+       
+    </form>
+    
+</div>
+{% endblock %}

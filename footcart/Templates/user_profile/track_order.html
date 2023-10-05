@@ -1,0 +1,53 @@
+{% extends 'user_profile/profile.html' %}
+
+{% load static %}
+
+{% block title %}
+Order Tracking
+{% endblock %}
+
+{% block profile %}
+
+<div class="col-lg-8 col-md-6 bg-white mt-5 p-5" style="border: 0.3px solid rgb(255, 255, 255); box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); height: 100%;">
+    <h5 class="mt-2 ms-3">Order Tracking</h5>
+    <div class="card mt-3 mb-3 p-3">
+        <div class="card-body">
+            <div class="row">
+                <div class="col-md-12">
+                    <h6>Order ID: {{ order.id }}</h6>
+                    <h6>Order Status: {{ order.order_status }}</h6>
+                    <h6>Order Date: {{ order.order_date }}</h6>
+                </div>
+            </div>
+            <!-- Add more order tracking information here -->
+            <div class="row mt-3">
+                <div class="col-md-12">
+                    <h6>Tracking Information:</h6>
+                    <ul class="list-group">
+
+                        <li class="list-group-item">
+                            <strong>Processing:</strong> {{ processing|date:"F d, Y" }}
+                            <br>
+                            <strong>Status:</strong> Shipped
+                        </li>
+
+                        <li class="list-group-item">
+                            <strong>Shipping Date:</strong> {{ shipping_date|date:"F d, Y" }}
+                            <br>
+                            <strong>Status:</strong> Shipped
+                        </li>
+
+                        <li class="list-group-item">
+                            <strong>Delivery Date:</strong> {{ delivery_date|date:"F d, Y" }}
+                            <br>
+                            <strong>Status:</strong> Delivery
+                        </li>
+                        <!-- Add more tracking entries as needed -->
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+{% endblock %}

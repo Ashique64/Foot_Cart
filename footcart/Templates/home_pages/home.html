@@ -1,0 +1,123 @@
+{% extends 'home_pages/base.html' %}
+
+{% load static %}
+
+{% block title %}
+FOOT-CART
+{% endblock %}
+
+{% block content %}
+<!-- ----------------------------------First-Section--------------------------------------- -->
+
+<div id="carouselExampleFade" class="carousel slide carousel-fade">
+  <div class="carousel-inner">
+    <div class="carousel-item active ">
+      <div class="image-container">
+        <img
+          src="{% static 'C:\Users\hp\OneDrive\Desktop\Foot Cart\footcart\static\img\Black_colour_shoe_banner__2_copy_2_36a027b7-a18c-4ca4-8acf-45f5c41ac361.jpg' %}"
+          class="img-fluid d-block w-100" alt="..." style="height: 530px;">
+        <button type="button"
+          class="btn btn-outline-light position-absolute top-50 end-0 me-md-4 me-2 translate-middle-y">ORDER-NOW</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ---------------------------------Second-Section---------------------------------------- -->
+
+<div class="container">
+  <div class="row mt-5">
+    <div class="col-md-12 d-flex justify-content-center mt-5 mb-5">
+      <h3 style="color: rgb(121, 115, 115);">NEW - ARRIVALS</h3>
+    </div>
+    {% for prod in new_arrivals %}
+    <div class="col-lg-3 col-md-6 col-sm-6 mt-4">
+      <div
+        style="height: 440px; border: 1px solid rgb(228, 225, 225);  border-radius: 10px; overflow: hidden;">
+        <div
+          style="background-image: url('{{ prod.image.url }}'); background-size: cover; background-position: center center; height: 320px;">
+        </div>
+        <div class="ms-4 mt-2">
+          <a href="{% url 'Product_details' prod.product.id %}" style="text-decoration: none;"><h6 class="fw-semibold"
+              style="cursor: pointer; color: brown;">{{ prod.product.name }}</h6></a>
+          <p class="fw-semibold">
+            <span style="color: black;">&#8377;</span>
+            <span style="color: rgb(154, 157, 158);">{{ prod.price }}</span>
+          </p>
+
+          <h6 class="text-black-50 fw-semibold">{{ prod.product.brand }}</h6>
+        </div>
+      </div>
+    </div>
+    {% endfor %}
+  </div>
+</div>
+
+<!-- -----------------------------Third-Section---------------------------------- -->
+<div class="third">
+  <div style="position: relative;">
+    <img
+      src="{% static 'C:\Users\hp\OneDrive\Desktop\Foot Cart\footcart\static\img\Untitled design.jpg'%}"
+      class="img-fluid" alt="..."
+      style="width: 100%; height: auto; padding-top: 100px; padding-bottom: 100px;">
+    <div style="position: absolute; top: 50%; left: 20%; transform: translate(-50%, -50%); text-align: center;">
+      <p class="text-white lh-lg d-none d-md-block" style="font-family: cursive;">Building trust with Integrity. At
+        Foot-Cart,
+        every decision <br> made is based on ethical and moral principles - <br> no success is meaningful if it’s not
+        achieved the right way</p>
+      <div class="d-md-flex justify-content-md-center">
+        <button type="button" class="btn btn-outline-light mt-5">ABOUT - US</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ------------------------------------Fourth-Section---------------------------------------- -->
+
+<div class="container">
+  <div class="row mb-5">
+    <div class="col-lg-12 col-md-12 d-flex justify-content-center mt-3">
+      <h3 style="color: rgb(121, 115, 115);">STORE PROMISE</h3>
+    </div>
+    <div class="store_promise_items mt-5 d-flex flex-wrap justify-content-center mb-5">
+      <div class="col-lg-4 col-md-6 col-sm-6 d-flex justify-content-center mb-4">
+        <div style="width: 356px; height: 232px; box-shadow: 2px 0 4px rgba(0, 0, 0, 0.2);">
+          <i class="bi bi-truck mt-5 d-flex justify-content-center" style="font-size: 64px;"></i>
+          <div class="card-body">
+            <h6 class="fw-semibold d-flex justify-content-center mt-2" style="cursor: pointer;" href="#">Free Shipping
+            </h6>
+            <p class="text-black-50 d-flex justify-content-center">On all orders, Ships within 24 hours*</p>
+          </div>
+        </div>
+      </div>
+
+      <div class="col-lg-4 col-md-6 col-sm-6 d-flex justify-content-center mb-4">
+        <div style="width: 356px; height: 232px; box-shadow: 2px 0 4px rgba(0, 0, 0, 0.2);">
+          <i class="bi bi-arrow-counterclockwise mt-5 d-flex justify-content-center" style="font-size: 60px;"></i>
+          <div class="card-body">
+            <h6 class="fw-semibold d-flex justify-content-center mt-2" style="cursor: pointer;" href="#">Hassle-free
+              Returns</h6>
+            <p class="text-black-50 d-flex justify-content-center">Within 30 days of receiving your order</p>
+          </div>
+        </div>
+      </div>
+
+      <div class="col-lg-4 col-md-6 col-sm-6 d-flex justify-content-center mb-4">
+        <div style="width: 356px; height: 232px; box-shadow: 2px 0 4px rgba(0, 0, 0, 0.2);">
+          <i class="bi bi-wallet2 mt-5 d-flex justify-content-center" style="font-size: 60px;"></i>
+          <div class="card-body">
+            <h6 class="fw-semibold d-flex justify-content-center mt-2" style="cursor: pointer;" href="#">Shop with
+              Confidence</h6>
+            <p class="text-black-50 d-flex justify-content-center">All your payments are safe and secure.</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+</body>
+
+</html>
+
+{% endblock  %}

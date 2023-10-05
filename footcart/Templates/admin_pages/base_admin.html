@@ -1,0 +1,72 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>DASHBOARD</title>
+    <!-- Bootstrap CSS -->
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+    <!-- Custom CSS -->
+</head>
+
+<body style="background-color: rgba(240, 248, 248, 0.533);">
+    <!------------------------- Nav-Bar ----------------------->
+
+    <nav class="navbar navbar-expand-lg navbar-light bg-white fixed-top">
+        <div class="container-fluid">
+            <a class="navbar-brand ms-3" href="/Admn">
+                <img class="footcart-logo"
+                    src="{% static 'C:\Users\hp\OneDrive\Desktop\Foot Cart\footcart\static\img\footcart-logo (2).png'%}"
+                    alt="" style="width: 100px;">
+            </a>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse"
+                data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false"
+                aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+
+            <div class="collapse navbar-collapse d-flex justify-content-center" id="navbarSupportedContent">
+                <ul class="navbar-nav me-auto gap-4">
+                    <!-- Show the following list items only on medium and large screens -->
+                    <li class="nav-item d-none d-md-block">
+                        <a class="nav-link fs-5" href="/Admn">Dashboard</a>
+                    </li>
+                    <li class="nav-item d-none d-md-block">
+                        <a class="nav-link fs-5" href="/Admn_user">Users</a>
+                    </li>
+                    <li class="nav-item d-none d-md-block">
+                        <a class="nav-link fs-5" href="/Admn_categories">Categories</a>
+                    </li>
+                    <li class="nav-item d-none d-md-block">
+                        <a class="nav-link fs-5" href="/Admn_product">Products</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link fs-5" href="/Admn_orders">All Orders</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link fs-5" href="/Admn_coupons">Coupons</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link fs-5" href="/sales_report">Sales Report</a>
+                    </li>
+                </ul>
+            </div>
+            <a href="/Admn_logout" class="btn btn-outline-secondary">Logout</a>
+        </div>
+    </nav>
+
+    {% block content %}
+
+    <!-- content -->
+
+    {% endblock %}
+
+    <!-- Bootstrap JS -->
+    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.1/dist/umd/popper.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+</body>
+
+</html>

@@ -28,7 +28,7 @@ PRODUCT DETAILS
                             <p class="card-subtitle mb-2">Size:{{ item.variant.size.name }}</p>
                         </div>
                         <div class="col-md-2 d-flex justify-content-center">
-                            <p class="card-subtitle mb-2">Price:<br>{{ item.variant.price }}</p>
+                            <p class="card-subtitle mb-2">Price:<br>{{ item.variant.discounted_price|floatformat:2 }}</p>
                         </div>
                         <div class="col-md-1 d-flex justify-content-center">
                             <p class="card-subtitle mb-2">{{ item.variant.color.name }}</p>
@@ -53,7 +53,7 @@ PRODUCT DETAILS
                 <div class="d-flex justify-content-between mt-4">
                     <p class="d-inline-flex" style="font-size: smaller;">Cart Total</p>
                     <span class="d-inline-flex">
-                        <p class="d-inline-flex font-size-sm cart-total-price">₹ {{ total_price }}</p>
+                        <p class="d-inline-flex font-size-sm cart-total-price">₹ {{ total_price|floatformat:2 }}</p>
                     </span>
                 </div>
                 {% if prod.discount %}
@@ -76,7 +76,7 @@ PRODUCT DETAILS
                 <div class="d-flex justify-content-between mt-3">
                     <h6 class="d-inline-flex">Order Total</h6>
                     <span class="d-inline-flex">
-                        <p class="d-inline-flex cart-total-price" style="font-size: smaller;">₹ {{ total_price }}</p>
+                        <p class="d-inline-flex cart-total-price" style="font-size: smaller;">₹ {{ total_price |floatformat:2}}</p>
                     </span>
                 </div>
             </div>

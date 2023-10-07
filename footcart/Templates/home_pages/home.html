@@ -14,7 +14,7 @@ FOOT-CART
     <div class="carousel-item active ">
       <div class="image-container">
         <img
-          src="{% static 'C:\Users\hp\OneDrive\Desktop\Foot Cart\footcart\static\img\Black_colour_shoe_banner__2_copy_2_36a027b7-a18c-4ca4-8acf-45f5c41ac361.jpg' %}"
+          src="{% static 'C:\Users\hp\OneDrive\Desktop\Foot-Cart\footcart\static\img\Black_colour_shoe_banner__2_copy_2_36a027b7-a18c-4ca4-8acf-45f5c41ac361.jpg' %}"
           class="img-fluid d-block w-100" alt="..." style="height: 530px;">
         <button type="button"
           class="btn btn-outline-light position-absolute top-50 end-0 me-md-4 me-2 translate-middle-y">ORDER-NOW</button>
@@ -38,7 +38,7 @@ FOOT-CART
           style="background-image: url('{{ prod.image.url }}'); background-size: cover; background-position: center center; height: 320px;">
         </div>
         <div class="ms-4 mt-2">
-          <a href="{% url 'Product_details' prod.product.id %}" style="text-decoration: none;"><h6 class="fw-semibold"
+          <a href="{% url 'Product_details' prod.product.id %}" style="text-decoration: none; display: inline-block;max-width: 250px;overflow: hidden; white-space: nowrap;"><h6 class="fw-semibold"
               style="cursor: pointer; color: brown;">{{ prod.product.name }}</h6></a>
           <p class="fw-semibold">
             <span style="color: black;">&#8377;</span>
@@ -57,7 +57,7 @@ FOOT-CART
 <div class="third">
   <div style="position: relative;">
     <img
-      src="{% static 'C:\Users\hp\OneDrive\Desktop\Foot Cart\footcart\static\img\Untitled design.jpg'%}"
+      src="{% static 'C:\Users\hp\OneDrive\Desktop\Foot-Cart\footcart\static\img\Untitled design.jpg'%}"
       class="img-fluid" alt="..."
       style="width: 100%; height: auto; padding-top: 100px; padding-bottom: 100px;">
     <div style="position: absolute; top: 50%; left: 20%; transform: translate(-50%, -50%); text-align: center;">

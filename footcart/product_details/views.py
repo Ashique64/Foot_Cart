@@ -39,8 +39,8 @@ def calculate_total_price(cart):
     cart_items = Cart_items.objects.filter(cart=cart)
     
     for cart_item in cart_items:
-        item_price = cart_item.variant.price * cart_item.quantity 
-        total_price += item_price
+        item_price = cart_item.variant.discounted_price() 
+        total_price += item_price * cart_item.quantity 
     
     return total_price
 

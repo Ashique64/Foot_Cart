@@ -250,53 +250,48 @@ def create_order(user, shipping_address, payment_method, coupon_discount_amount,
     return order
 
 def razorpay(request,cart_id):
-    user = request.user
     cart = get_object_or_404(Cart, id=cart_id)
     cart_id =cart.id
-    if user.is_authenticated:
+    user = request.user 
+    shipping_address = Address.objects.filter(user=user).last()
+    total_price = calculate_total_price(cart)
+    cart_items = Cart_items.objects.filter(cart=cart)
     
-        shipping_address = Address.objects.filter(user=user).last()
-        total_price = calculate_total_price(cart)
-        cart_items = Cart_items.objects.filter(cart=cart)
+    payment_method = 'Razorpay'
+    coupon_discount_amount = request.session.get('coupon_discount_amount', Decimal(0))
+    coupon_applied = 'coupon_discount_amount' in request.session
     
-        payment_method = 'Razorpay'
-        coupon_discount_amount = request.session.get('coupon_discount_amount', Decimal(0))
-        coupon_applied = 'coupon_discount_amount' in request.session
-    
-        if coupon_applied:
-            order_total = total_price - Decimal(coupon_discount_amount)
-        else:
-            order_total = Decimal(total_price) 
-            
-        with transaction.atomic():
-                try:
-                    for cart_item in cart_items:
-                        variant = cart_item.variant
-                        quantity = cart_item.quantity
-                        if variant.quantity >= quantity:
-                            variant.quantity -= quantity
-                            variant.save()
-                        else:
-                            raise Exception("Insufficient stock for the product")
-
-                except Exception as e:
-                    transaction.set_rollback(True)
-                    return render(request, 'product_details_page/payment_error.html', {
-                        'error_message': 'Payment failed. Please try again later.',
-                    })
-    
-    
-        order = create_order(user, shipping_address, payment_method, coupon_discount_amount, total_price, cart_items)
-        
-        cart_items.delete()
-        order_items = Order_items.objects.filter(order=order)
-        coupon_discount_amount = Decimal(coupon_discount_amount)
-        order_total = total_price - coupon_discount_amount
-        return render(request,'product_details_page/order_summary.html',{'order_items':order_items,'address': shipping_address,'total_price': floatformat(total_price, 2),'coupon_discount_amount': floatformat(coupon_discount_amount, 2),'order_total': floatformat(order_total, 2)}) 
+    if coupon_applied:
+        order_total = total_price - Decimal(coupon_discount_amount)
     else:
-        return render(request, 'product_details_page/error.html', {
-            'error_message': 'Authentication required to complete the payment.'
-        })
+        order_total = Decimal(total_price) 
+        
+    with transaction.atomic():
+            try:
+                for cart_item in cart_items:
+                    variant = cart_item.variant
+                    quantity = cart_item.quantity
+                    if variant.quantity >= quantity:
+                        variant.quantity -= quantity
+                        variant.save()
+                    else:
+                        raise Exception("Insufficient stock for the product")
+
+            except Exception as e:
+                transaction.set_rollback(True)
+                return render(request, 'product_details_page/payment_error.html', {
+                    'error_message': 'Payment failed. Please try again later.',
+                })
+    
+    
+    order = create_order(user, shipping_address, payment_method, coupon_discount_amount, total_price, cart_items)
+    
+    cart_items.delete()
+    order_items = Order_items.objects.filter(order=order)
+    coupon_discount_amount = Decimal(coupon_discount_amount)
+    order_total = total_price - coupon_discount_amount
+    return render(request,'product_details_page/order_summary.html',{'order_items':order_items,'address': shipping_address,'total_price': floatformat(total_price, 2),'coupon_discount_amount': floatformat(coupon_discount_amount, 2),'order_total': floatformat(order_total, 2)}) 
+
 
 
 

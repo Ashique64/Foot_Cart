@@ -192,7 +192,7 @@ def Slippers(request):
         category = None
 
     if category:
-        products = Variants.objects.filter(product__category=category).distinct('product')
+        products = Variants.objects.filter(product__category=category)
 
         if selected_sizes:
             products = products.filter(size__in=selected_sizes)

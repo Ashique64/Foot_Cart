@@ -10,7 +10,7 @@ FORMALS
 
 <div class="container-fluid mb-5" style="background-color: rgb(255, 255, 255);">
     <div class="row">
-        <div class="col-lg-3 col-md-6 d-none d-md-block" style="margin-top: 84px;">
+        <div class="col-lg-3 col-md-4" style="margin-top: 84px;">
             <div class="p-2 ms-2" style="background-color: rgb(255, 255, 255); width: 260px; height: 50px;">
                 <h6 style="margin-left: 10px; margin-top: 7px; color: rgb(146, 149, 152);">FILTERS</h6>
             </div>
@@ -101,7 +101,7 @@ FORMALS
 
         </div>
 
-        <div class="col-lg-9 col-md-6" style="margin-top: 90px;">
+        <div class="col-lg-9 col-md-8" style="margin-top: 90px;">
             <div class="mt-5 p-4 d-flex align-items-center justify-content-start"
                 style="font-family: 'Lucida Sans'; color: rgb(0, 0, 0); height: 100px; width: 935px;">
                 <h4>WEDDING SHOES</h4>
@@ -128,17 +128,17 @@ FORMALS
                             style="background-image: url('{{ wedding.image.url }}'); background-size: cover; background-position: center center; height: 320px;">
                         </div>
                         <div class="ms-4 mt-2">
-                            <a style="text-decoration: none; display: inline-block;max-width: 250px;overflow: hidden; white-space: nowrap;" href="{% url 'Product_details' wedding.product.id %}">
-                                <h6 class="fw-semibold" style="cursor: pointer; color: brown;">{{ wedding.product.name}}</h6>
+                            <a style="text-decoration: none; display: inline-block;max-width: 200px;overflow: hidden; white-space: nowrap;" href="{% url 'Product_details' wedding.product.id %}">
+                                <h6 class="fw-semibold" style="cursor: pointer; color: black;">{{ wedding.product.name}}</h6>
                             </a>
                             <p class="fw-semibold">
-                                <span style="color: black;">&#8377;</span>
+                                <span class="text-black-50 fw-semibold">&#8377;</span>
                                 {% if wedding.discount %}
-                                    <span style="color: rgb(154, 157, 158);">{{ wedding.discounted_price|floatformat:2 }}</span>
-                                    <span class="ms-3" style="color: black;">&#8377;</span>
+                                    <span class="text-black-50 fw-semibold">{{ wedding.discounted_price|floatformat:2 }}</span>
+                                    <span class="ms-3" style="color: rgb(11, 138, 181);">&#8377;</span>
                                     <span style="color: rgb(11, 138, 181); text-decoration: line-through;">{{ wedding.price|floatformat:2 }}</span>
                                 {% else %}
-                                    <span style="color: rgb(154, 157, 158);">{{ wedding.price|floatformat:2 }}</span>
+                                    <span class="text-black-50 fw-semibold">{{ wedding.price|floatformat:2 }}</span>
                                 {% endif %}
                             </p>
 
@@ -177,6 +177,37 @@ FORMALS
         </div>
     </div>
 </div>
+
+<style>
+  
+    .pagination .page-item.active .page-link {
+        background-color: #000000;
+        border-color: #ffffff;
+    }
+
+
+    .pagination .page-item .page-link {
+        color: #ffffff;
+    }
+
+    .pagination .page-item:first-child .page-link,
+    .pagination .page-item:last-child .page-link {
+        background-color: #000000;
+        border-color: #000000;
+        color: #ffffff;
+    }
+
+    .pagination .page-item .page-link {
+        background-color: #000000;
+        border-color: #ffffff;
+    }
+
+    .pagination .page-item .page-link:hover {
+        background-color: #b98b47;
+        border-color: #f4f4f4;
+        color: #000000;
+    }
+</style>
 
 
 <script>

@@ -263,14 +263,14 @@ def Add_variant(request,product_id):
         product_image = request.FILES.get('prod_image')
         
         
-        discounted_price = product_price - (product_price * product_discount / 100) 
+        discounted_price = (product_price * product_discount / 100) 
         
         variant_items=Variants(
             product= product,
             size = size_instance,
             color = color_instance,
-            price = discounted_price,
-            discount = product_discount,
+            price = product_price,
+            discount = discounted_price,
             quantity=product_quantity,
             discription=product_description,
             image = product_image
@@ -280,7 +280,7 @@ def Add_variant(request,product_id):
         return redirect('Variant',product_id=product_id)
         
     
-    return render(request, 'admin_pages/Add_variant.html',{'product':product,'colors':color,'sizes':size})
+    return render(request, 'admin_pages/add_variant.html',{'product':product,'colors':color,'sizes':size})
 
 
 def Edit_variant(request,variant_id):
@@ -433,7 +433,7 @@ def sales_report(request):
             order_items = order_items.filter(order__order_date__gte=start_date)
             
     page_number = request.GET.get('page')
-    items_per_page = 10  
+    items_per_page = 15
     paginator = Paginator(order_items, items_per_page)
     page = paginator.get_page(page_number)
 

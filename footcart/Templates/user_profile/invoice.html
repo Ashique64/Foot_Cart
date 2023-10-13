@@ -8,8 +8,9 @@ ORDER INVOICE
 
 {% block profile %}
 
-<div class="col-lg-8 col-md-6 bg-white mt-5 p-5" id="invoiceContainer" style="border: 0.3px solid rgb(255, 255, 255); box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); height: 100%;">
-    <h5 style="display: flex; justify-content: center; font-weight: 550;">INVOICE</h5>
+<div class="col-lg-8 col-md-6 bg-white mt-5 p-5"  style="border: 0.3px solid rgb(255, 255, 255); box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); height: 100%;">
+    <div id="invoiceContainer" class="ms-3">
+        <h5 style="display: flex; justify-content: center; font-weight: 550;">INVOICE</h5>
     <h4 class="mt-4" style="display: flex; justify-content: center; font-weight: 400;">FOOT CART</h4>
     <h6 style="display: flex; justify-content: center;color: rgb(173, 173, 171);">customercare@footcart.com</h6>
     <div class="row mt-5">
@@ -72,6 +73,7 @@ ORDER INVOICE
                 </tr>
             </tbody>
         </table>
+    </div>
     </div>
     <div style="display: flex; justify-content: center;"><button type="button" id="pdfButton" class="btn btn-outline-info">Download</button></div>
 </div>

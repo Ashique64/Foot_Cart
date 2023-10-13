@@ -191,25 +191,24 @@ def apply_coupon(request):
                 try:
                     coupon = Coupon.objects.get(code=coupon_code)
 
-                    if coupon.is_active and coupon.valid_from <= timezone.now() <= coupon.valid_to:
-                        if coupon.minimum_amount is not None and total_price >= coupon.minimum_amount:
-                            if coupon.discount_type == 'percentage':
-                                discount_amount = (coupon.discount / 100) * total_price
-                            else:
-                                discount_amount = coupon.discount
-                                
-
-                            discounted_total = total_price - Decimal(discount_amount)
+                    if coupon.minimum_amount is not None and total_price >= coupon.minimum_amount:
+                        if coupon.discount_type == 'percentage':
+                            discount_amount = (coupon.discount / 100) * total_price
                             
-                            
-                            request.session['coupon_discount_amount'] = float(discount_amount)
-                            request.session['discounted_total'] = float(discounted_total)
-                            
-                            return JsonResponse({'success': True, 'discount_amount': discount_amount, 'discounted_total': discounted_total})
                         else:
-                            return JsonResponse({'success': False, 'error_message': 'Coupon not applicable.'})
+                            discount_amount = coupon.discount
+                            
+                            
+
+                        discounted_total = total_price - Decimal(discount_amount)
+                        
+                        
+                        request.session['coupon_discount_amount'] = float(discount_amount)
+                        request.session['discounted_total'] = float(discounted_total)
+                        
+                        return JsonResponse({'success': True, 'discount_amount': discount_amount, 'discounted_total': discounted_total})
                     else:
-                        return JsonResponse({'success': False, 'error_message': 'Invalid coupon.'})
+                        return JsonResponse({'success': False, 'error_message': 'Coupon not applicable.'})
                     
                 except Coupon.DoesNotExist:
                     return JsonResponse({'success': False, 'error_message': 'Coupon not found.'})
@@ -227,6 +226,8 @@ def Order_summary(request):
 
 def create_order(user, shipping_address, payment_method, coupon_discount_amount, total_price, cart_items):
     coupon_discount_amount = Decimal(coupon_discount_amount)
+    if shipping_address is None:
+        raise Exception("Shipping address is missing when creating the order.")
     order = My_Order.objects.create(
         user=user,
         address=shipping_address,
@@ -249,48 +250,53 @@ def create_order(user, shipping_address, payment_method, coupon_discount_amount,
     return order
 
 def razorpay(request,cart_id):
+    user = request.user
     cart = get_object_or_404(Cart, id=cart_id)
     cart_id =cart.id
-    user = request.user 
-    shipping_address = Address.objects.filter(user=user).last()
-    total_price = calculate_total_price(cart)
-    cart_items = Cart_items.objects.filter(cart=cart)
+    if user.is_authenticated:
     
-    payment_method = 'Razorpay'
-    coupon_discount_amount = request.session.get('coupon_discount_amount', Decimal(0))
-    coupon_applied = 'coupon_discount_amount' in request.session
+        shipping_address = Address.objects.filter(user=user).last()
+        total_price = calculate_total_price(cart)
+        cart_items = Cart_items.objects.filter(cart=cart)
     
-    if coupon_applied:
-        order_total = total_price - Decimal(coupon_discount_amount)
-    else:
-        order_total = Decimal(total_price) 
+        payment_method = 'Razorpay'
+        coupon_discount_amount = request.session.get('coupon_discount_amount', Decimal(0))
+        coupon_applied = 'coupon_discount_amount' in request.session
+    
+        if coupon_applied:
+            order_total = total_price - Decimal(coupon_discount_amount)
+        else:
+            order_total = Decimal(total_price) 
+            
+        with transaction.atomic():
+                try:
+                    for cart_item in cart_items:
+                        variant = cart_item.variant
+                        quantity = cart_item.quantity
+                        if variant.quantity >= quantity:
+                            variant.quantity -= quantity
+                            variant.save()
+                        else:
+                            raise Exception("Insufficient stock for the product")
+
+                except Exception as e:
+                    transaction.set_rollback(True)
+                    return render(request, 'product_details_page/payment_error.html', {
+                        'error_message': 'Payment failed. Please try again later.',
+                    })
+    
+    
+        order = create_order(user, shipping_address, payment_method, coupon_discount_amount, total_price, cart_items)
         
-    with transaction.atomic():
-            try:
-                for cart_item in cart_items:
-                    variant = cart_item.variant
-                    quantity = cart_item.quantity
-                    if variant.quantity >= quantity:
-                        variant.quantity -= quantity
-                        variant.save()
-                    else:
-                        raise Exception("Insufficient stock for the product")
-
-            except Exception as e:
-                transaction.set_rollback(True)
-                return render(request, 'product_details_page/payment_error.html', {
-                    'error_message': 'Payment failed. Please try again later.',
-                })
-    
-    
-    order = create_order(user, shipping_address, payment_method, coupon_discount_amount, total_price, cart_items)
-    
-    cart_items.delete()
-    order_items = Order_items.objects.filter(order=order)
-    coupon_discount_amount = Decimal(coupon_discount_amount)
-    order_total = total_price - coupon_discount_amount
-    return render(request,'product_details_page/order_summary.html',{'order_items':order_items,'address': shipping_address,'total_price': floatformat(total_price, 2),'coupon_discount_amount': floatformat(coupon_discount_amount, 2),'order_total': floatformat(order_total, 2)}) 
-
+        cart_items.delete()
+        order_items = Order_items.objects.filter(order=order)
+        coupon_discount_amount = Decimal(coupon_discount_amount)
+        order_total = total_price - coupon_discount_amount
+        return render(request,'product_details_page/order_summary.html',{'order_items':order_items,'address': shipping_address,'total_price': floatformat(total_price, 2),'coupon_discount_amount': floatformat(coupon_discount_amount, 2),'order_total': floatformat(order_total, 2)}) 
+    else:
+        return render(request, 'product_details_page/error.html', {
+            'error_message': 'Authentication required to complete the payment.'
+        })
 
 
 

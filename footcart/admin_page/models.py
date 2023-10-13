@@ -85,7 +85,7 @@ class Coupon(models.Model):
     discount_type = models.CharField(max_length=20, choices=[
         ('percentage', 'Percentage'),
         ('fixed_amount', 'Fixed Amount'),
-    ], default='percentage')
+    ], default='fixed_amount')
     discount = models.DecimalField(max_digits=10, decimal_places=2)
     minimum_amount = models.DecimalField(max_digits=10, decimal_places=2, blank=True, null=True)
     valid_from = models.DateTimeField(default=timezone.now)
